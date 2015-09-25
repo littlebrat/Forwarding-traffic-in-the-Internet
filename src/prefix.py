@@ -13,6 +13,20 @@ class Prefix:
             # unsupported format
             raise Exception("unsupported prefix input format")
 
+    def get(self, bit_position):
+        bit = self.bits & 2**(self.length - bit_position - 1)
+        bit >>= self.length - bit_position - 1
+        return bit
+
+    def set(self, bit_position):
+        self.bits |= 2 ** (self.length - bit_position - 1)
+
+    def unset(self, bit_position):
+        self.bits &= ~(2 ** (self.length - bit_position - 1))
+
+    def length(self):
+        return self.length
+
     def __iter__(self):
         self.iterations = 0
         return self
@@ -22,8 +36,8 @@ class Prefix:
             raise StopIteration()
 
         # get the next bit based on the number of iterations
-        bit = self.bits & 2**(self.length - self.iterations - 1)
-        bit >>= self.length - self.iterations - 1
+        bit = self.get(self.iterations)
+
         # increase iteration count
         self.iterations += 1
 
