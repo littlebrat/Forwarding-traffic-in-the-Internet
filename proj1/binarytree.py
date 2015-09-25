@@ -9,7 +9,7 @@ class BinaryTree:
     def insert(self, prefix, next_hop):
         cur_node = self.root
         for bit in prefix:
-            if bit is 1:
+            if bit is '1':
                 # move to the right
                 if cur_node.right() is None:
                     # create node if necessary
@@ -25,3 +25,4 @@ class BinaryTree:
                 cur_node = cur_node.left()
         # set the next-hop of the final node
         cur_node.set_next_hop(next_hop)
+
