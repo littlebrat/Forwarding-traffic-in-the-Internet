@@ -1,3 +1,4 @@
+from proj1.binary_tree.binarytree import BinaryTree
 from proj1.node import Node
 import proj1.ip_address as ip
 
@@ -25,10 +26,9 @@ def _remove_node(parent_node, node, default_next_hop):
             parent_node.right().set_next_hop(default_next_hop)
 
 
-class RoutingBinaryTree:
+class Binary2Tree(BinaryTree):
     def __init__(self, default_next_hop):
-        # start with only one node with the default next-hop
-        self.root = Node(default_next_hop)
+        super().__init__(default_next_hop)
 
         # must store the default next-hop to use in the delete function
         self.default_next_hop = default_next_hop
@@ -154,17 +154,3 @@ class RoutingBinaryTree:
                 cur_node = cur_node.left()
 
         return next_hop
-
-    def _print_node(self, node, bits):
-        if node is not None:
-            if node.next_hop() != -1:
-                print(bits, node.next_hop())
-            else:
-                # print left node
-                self._print_node(node.left(), bits + '0')
-
-                # print right node
-                self._print_node(node.right(), bits + '1')
-
-    def print(self):
-        self._print_node(self.root, '')

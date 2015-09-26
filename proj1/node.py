@@ -1,7 +1,7 @@
 class Node:
     id_count = 0
 
-    def __init__(self, next_hop, left=None, right=None):
+    def __init__(self, next_hop=-1, left=None, right=None):
         self._next_hop = next_hop
         self._left = left
         self._right = right
