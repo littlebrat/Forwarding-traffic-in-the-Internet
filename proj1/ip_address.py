@@ -31,19 +31,46 @@ def binary_to_decimal(ip_address):
     return int(ip_address, base=2)
 
 
-# converts an ip address from decimal format to the binary format
-def decimal_to_binary(ip_address):
+# converts any decimal integer to binary representation
+def _decimal_to_binary(decimal_number, length=-1):
     # start with empty string
-    string = ''
-    # convert decimal in to string with value in base 2
-    decimal = ip_address
+    binary = ''
+
+    decimal = int(decimal_number)
     while decimal != 0:
-        string = str(decimal % 2) + string
+        binary = str(decimal % 2) + binary
         decimal = int(decimal / 2)
 
-    # add 0s to the left of the string to account for the 0s with no value
-    for i in range(len(string), 32):
-        string = '0' + string
+    # add 0s to the left of the binary representation to guarantee the needed length
+    for i in range(len(binary), length):
+        binary = '0' + binary
 
-    return string
+    return binary
 
+
+# converts an ip address from decimal format to the binary format
+def decimal_to_binary(ip_address):
+    return _decimal_to_binary(ip_address, length=32)
+
+
+def quad_doted_to_binary(ip_address):
+    binary = ''
+    for byte in ip_address.split('.'):
+        # convert byte decimal value to it's binary representation
+        binary += _decimal_to_binary(byte, length=8)
+
+    return binary
+
+
+def binary_to_quad_doted(ip_address):
+    quad_doted = ''
+    # for each byte in the binary ip address
+    for i in range(0, 24, 8):
+        byte = ip_address[i:i + 8]
+        quad_doted += str(int(byte, base=2)) + '.'
+
+    # don't include the '.' in the last byte
+    byte = ip_address[24:32]
+    quad_doted += str(int(byte, base=2))
+
+    return quad_doted
