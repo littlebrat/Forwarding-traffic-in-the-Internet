@@ -72,12 +72,15 @@ class BinaryTree:
                     parent,side = cur_node,'0'
                 # move to the left
                 cur_node = cur_node.left()
-        if side is '1':
-            # delete the right child of the tree
-            parent.set_right(None)
-        elif side is '0':
-            # delete the left child of the tree
-            parent.set_left(None)
+        if cur_node.right() is not None or cur_node.left() is not None:
+            cur_node.set_next_hop(-1)
+        else:
+            if side is '1':
+                # delete the right child of the tree
+                parent.set_right(None)
+            elif side is '0':
+                # delete the left child of the tree
+                parent.set_left(None)
 
     def __str__(self):
         cur_node = self.root
