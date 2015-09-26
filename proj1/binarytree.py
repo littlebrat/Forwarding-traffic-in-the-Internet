@@ -14,14 +14,14 @@ class BinaryTree:
                 # move to the right
                 if cur_node.right() is None:
                     # create node if necessary
-                    cur_node.setRight(Node(-1))
+                    cur_node.set_right(Node(-1))
                 # move the current node to the right node
                 cur_node = cur_node.right()
             else:
                 # move to the left
                 if cur_node.left() is None:
                     # create node if necessary
-                    cur_node.setLeft(Node(-1))
+                    cur_node.set_left(Node(-1))
                 # move the current node to the left node
                 cur_node = cur_node.left()
         # set the next-hop of the final node
@@ -35,7 +35,7 @@ class BinaryTree:
                 # move to the right
                 if cur_node.right() is None:
                     # if there is not any node right, longest prefix has been found
-                    return cur_node.getHop()
+                    return cur_node.get_hop()
                     # return the nextHop for this ip
                 # move right
                 cur_node = cur_node.right()
@@ -43,7 +43,7 @@ class BinaryTree:
                 # move to the left
                 if cur_node.left() is None:
                     # if there is not any node left, longest prefix has been found
-                    return cur_node.getHop()
+                    return cur_node.get_hop()
                     # return the nextHop for this ip
                 # move left
                 cur_node = cur_node.left()
@@ -67,10 +67,10 @@ class BinaryTree:
                 cur_node = cur_node.left()
         if side is '1':
             # delete the right child of the tree
-            parent.setRight(None)
+            parent.set_right(None)
         elif side is '0':
             # delete the left child of the tree
-            parent.setLeft(None)
+            parent.set_left(None)
 
     def __str__(self):
         cur_node = self.root

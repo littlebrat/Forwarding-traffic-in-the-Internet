@@ -14,13 +14,13 @@ class Node():
     def right(self):
         return self._right
 
-    def setLeft(self,node):
+    def set_left(self,node):
         self._left = node
 
-    def setRight(self,node):
+    def set_right(self,node):
         self._right = node
 
-    def getHop(self):
+    def get_hop(self):
         return self._next_hop
 
     def set_next_hop(self, next_hop):
@@ -45,6 +45,6 @@ class Queue:
         """
         return self.list.pop()
 
-    def isEmpty(self):
+    def is_empty(self):
         "Returns true if the queue is empty"
         return len(self.list) == 0
