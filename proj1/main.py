@@ -7,6 +7,5 @@ test.insert('10',2)
 test.insert('11',3)
 test.insert('010',3)
 test.insert('110',4)
-
-print(test.root.right().right().left())
+print(test.lookup('01011'))
 

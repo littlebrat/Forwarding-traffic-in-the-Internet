@@ -1,4 +1,5 @@
-from node import Node
+from utils import Node, Queue
+
 
 class BinaryTree:
 
@@ -25,4 +26,21 @@ class BinaryTree:
                 cur_node = cur_node.left()
         # set the next-hop of the final node
         cur_node.set_next_hop(next_hop)
+
+    def lookup(self,prefix):
+        cur_node = self.root
+        for bit in prefix:
+            if bit is '1':
+                if cur_node.right() is None:
+                    return cur_node.getHop()
+                cur_node = cur_node.right()
+            else:
+                if cur_node.left() is None:
+                    return cur_node.getHop()
+                cur_node = cur_node.left()
+
+
+    def __str__(self):
+        cur_node = self.root
+
 
