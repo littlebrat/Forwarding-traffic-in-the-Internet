@@ -105,7 +105,7 @@ class RoutingBinaryTree:
                 # move to the left
                 cur_node = cur_node.left()
 
-        if cur_node is not None:
+        if cur_node is not None and cur_node.next_hop() != -1:
             # the prefix was found
             # remove node from the tree
             parent_node = visited_nodes[0]
