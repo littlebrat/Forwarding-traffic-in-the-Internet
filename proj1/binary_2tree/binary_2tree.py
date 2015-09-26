@@ -25,7 +25,7 @@ def _remove_node(parent_node, node, default_next_hop):
             parent_node.right().set_next_hop(default_next_hop)
 
 
-class RoutingBinaryTree:
+class Binary2Tree:
     def __init__(self, default_next_hop):
         # start with only one node with the default next-hop
         self.root = Node(default_next_hop)

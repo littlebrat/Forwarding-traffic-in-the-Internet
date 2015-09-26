@@ -1,4 +1,4 @@
-from utils import Node, Queue
+from proj1.node import Node
 
 
 class BinaryTree:
@@ -27,15 +27,15 @@ class BinaryTree:
         # set the next-hop of the final node
         cur_node.set_next_hop(next_hop)
 
-    def lookup(self,ip):
+    def lookup(self, ip):
         # starting point for the search
         cur_node = self.root
-        hop = cur_node.get_hop()
+        hop = cur_node.next_hop()
         for bit in ip:
             if bit is '1':
                 # memorize the hop if it is valid
-                if cur_node.get_hop() != -1:
-                    hop = cur_node.get_hop()
+                if cur_node.next_hop() != -1:
+                    hop = cur_node.next_hop()
                 # move to the right
                 if cur_node.right() is None:
                     # if there is not any node right, longest prefix has been found
@@ -45,8 +45,8 @@ class BinaryTree:
                 cur_node = cur_node.right()
             else:
                 # memorize the hop if it is valid
-                if cur_node.get_hop() != -1:
-                    hop = cur_node.get_hop()
+                if cur_node.next_hop() != -1:
+                    hop = cur_node.next_hop()
                 # move to the left
                 if cur_node.left() is None:
                     # if there is not any node left, longest prefix has been found
@@ -55,21 +55,21 @@ class BinaryTree:
                 # move left
                 cur_node = cur_node.left()
 
-    def delete(self,prefix):
+    def delete(self, prefix):
         cur_node = self.root
         # reference to delete
-        parent,side = cur_node,''
+        parent, side = cur_node, ''
         for bit in prefix:
             if bit is '1':
                 # find if the current node has 2 children
                 if cur_node.right() is not None and cur_node.left() is not None:
-                    parent,side = cur_node,'1'
+                    parent, side = cur_node, '1'
                 # move to the right
                 cur_node = cur_node.right()
             else:
                 # find if the current node has 2 children
                 if cur_node.right() is not None and cur_node.left() is not None:
-                    parent,side = cur_node,'0'
+                    parent, side = cur_node, '0'
                 # move to the left
                 cur_node = cur_node.left()
         if cur_node.right() is not None or cur_node.left() is not None:
@@ -84,5 +84,3 @@ class BinaryTree:
 
     def __str__(self):
         cur_node = self.root
-
-
