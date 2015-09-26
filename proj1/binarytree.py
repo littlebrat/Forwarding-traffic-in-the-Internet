@@ -48,6 +48,29 @@ class BinaryTree:
                 # move left
                 cur_node = cur_node.left()
 
+    def delete(self,prefix):
+        cur_node = self.root
+        # reference to delete
+        parent,side = cur_node,''
+        for bit in prefix:
+            if bit is '1':
+                # find if the current node has 2 children
+                if cur_node.right() is not None and cur_node.left() is not None:
+                    parent,side = cur_node,'1'
+                # move to the right
+                cur_node = cur_node.right()
+            else:
+                # find if the current node has 2 children
+                if cur_node.right() is not None and cur_node.left() is not None:
+                    parent,side = cur_node,'0'
+                # move to the left
+                cur_node = cur_node.left()
+        if side is '1':
+            # delete the right child of the tree
+            parent.setRight(None)
+        elif side is '0':
+            # delete the left child of the tree
+            parent.setLeft(None)
 
     def __str__(self):
         cur_node = self.root
