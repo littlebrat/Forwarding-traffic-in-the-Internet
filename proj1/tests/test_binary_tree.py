@@ -1,4 +1,5 @@
-from proj1.routing_binary_tree import RoutingBinaryTree
+from proj1.binary_2tree.binary_2tree import Binary2Tree
+from proj1.binary_tree.binarytree import BinaryTree
 from proj1.prefix import Prefix
 
 
@@ -74,9 +75,17 @@ def test_delete(tree):
 
 def test_print(tree):
     print("PRINT TEST")
+    print("initial")
+    print_tree(tree)
     tree.print()
 
-tree = RoutingBinaryTree(1)
+tree = Binary2Tree(1)
+test_insert(tree)
+test_lookup(tree)
+test_delete(tree)
+test_print(tree)
+
+tree = BinaryTree(1)
 test_insert(tree)
 test_lookup(tree)
 test_delete(tree)
