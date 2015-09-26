@@ -159,12 +159,12 @@ class RoutingBinaryTree:
         if node is not None:
             if node.next_hop() != -1:
                 print(bits, node.next_hop())
-            else:
-                # print left node
-                self._print_node(node.left(), bits + '0')
 
-                # print right node
-                self._print_node(node.right(), bits + '1')
+            # print left node
+            self._print_node(node.left(), bits + '0')
+
+            # print right node
+            self._print_node(node.right(), bits + '1')
 
     def print(self):
         self._print_node(self.root, '')
