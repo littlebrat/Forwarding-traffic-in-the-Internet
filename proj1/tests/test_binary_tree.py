@@ -6,15 +6,24 @@ def print_tree(tree):
     node = tree.root
     nodes = []
     while node:
-        nodes.insert(0, node.left())
-        nodes.insert(0, node.right())
+
+        # store the nodes children in the queue
+        if node.left() is not None:
+            nodes.insert(0, node.left())
+        if node.right() is not None:
+            nodes.insert(0, node.right())
 
         print("node: ", node)
         print("left: ", node.left())
         print("right: ", node.right())
         print()
 
-        node = nodes.pop(len(nodes) - 1)
+        if len(nodes) == 0:
+            # printed all nodes
+            break
+
+        # get next node in the queue
+        node = nodes.pop()
 
 
 def test_insert(tree):
