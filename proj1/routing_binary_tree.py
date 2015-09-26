@@ -107,12 +107,9 @@ class RoutingBinaryTree:
 
         if cur_node is not None:
             # the prefix was found
-            # get the node of the prefix from the visited list
-            node = visited_nodes.pop(0)
-
             # remove node from the tree
             parent_node = visited_nodes[0]
-            _remove_node(parent_node, node, self.default_next_hop)
+            _remove_node(parent_node, cur_node, self.default_next_hop)
 
             # remove all the unnecessary nodes
             for node in visited_nodes:
@@ -127,6 +124,9 @@ class RoutingBinaryTree:
                     node.set_next_hop(node.left().next_hop())
                     node.set_left(None)
                     node.set_right(None)
+                else:
+                    # can't move up mode nodes
+                    break
 
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
