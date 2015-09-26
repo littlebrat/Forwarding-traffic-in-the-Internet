@@ -28,3 +28,6 @@ class Node:
 
     def __str__(self):
         return '(' + str(self.id) + ', ' + str(self._next_hop) + ')'
+
+    def __eq__(self, other):
+        return self.id == other.id
