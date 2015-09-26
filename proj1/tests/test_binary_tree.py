@@ -16,21 +16,41 @@ def print_tree(tree):
 
         node = nodes.pop(len(nodes) - 1)
 
+
+def test_insert(tree):
+    print("INSERT TEST")
+    print("initial")
+    print_tree(tree)
+
+    tree.insert(Prefix("00"), 2)
+    print("00->2")
+    print_tree(tree)
+
+    tree.insert(Prefix("10"), 2)
+    print("10->2")
+    print_tree(tree)
+
+
+def test_lookup(tree):
+    print("LOOKUP TEST")
+    print(tree.lookup("255.1.1.1"), 1)
+    print(tree.lookup("0.1.1.1"), 2)
+    print(tree.lookup("127.1.1.1"), 1)
+    print(tree.lookup("64.1.1.1"), 1)
+    print(tree.lookup("128.1.1.1"), 2)
+    print(tree.lookup("160.1.1.1"), 2)
+
+
+def test_delete(tree):
+    print("DELETE TEST")
+    print("initial")
+    print_tree(tree)
+
+    tree.delete(Prefix("00"))
+    print("delete 00")
+    print_tree(tree)
+
 tree = RoutingBinaryTree(1)
-print("initial")
-print_tree(tree)
-
-tree.insert(Prefix("00"), 2)
-print("00->2")
-print_tree(tree)
-
-tree.insert(Prefix("10"), 2)
-print("10->2")
-print_tree(tree)
-
-print(tree.lookup("255.1.1.1"), 1)
-print(tree.lookup("0.1.1.1"), 2)
-print(tree.lookup("127.1.1.1"), 1)
-print(tree.lookup("64.1.1.1"), 1)
-print(tree.lookup("128.1.1.1"), 2)
-print(tree.lookup("160.1.1.1"), 2)
+test_insert(tree)
+test_lookup(tree)
+test_delete(tree)
