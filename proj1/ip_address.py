@@ -26,3 +26,24 @@ def decimal_to_quad_doted(ip_address):
     return quad_doted
 
 
+# converts an ip address in binary format to it's decimal format
+def binary_to_decimal(ip_address):
+    return int(ip_address, base=2)
+
+
+# converts an ip address from decimal format to the binary format
+def decimal_to_binary(ip_address):
+    # start with empty string
+    string = ''
+    # convert decimal in to string with value in base 2
+    decimal = ip_address
+    while decimal != 0:
+        string = str(decimal % 2) + string
+        decimal = int(decimal / 2)
+
+    # add 0s to the left of the string to account for the 0s with no value
+    for i in range(len(string), 32):
+        string = '0' + string
+
+    return string
+
