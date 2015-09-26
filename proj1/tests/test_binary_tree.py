@@ -39,6 +39,18 @@ def test_insert(tree):
     print("10->2")
     print_tree(tree)
 
+    tree.insert(Prefix("0001"), 3)
+    print("0001->3")
+    print_tree(tree)
+
+    tree.insert(Prefix("0101"), 2)
+    print("0101->2")
+    print_tree(tree)
+
+    tree.insert(Prefix("0001"), 4)
+    print("0001->4")
+    print_tree(tree)
+
 
 def test_lookup(tree):
     print("LOOKUP TEST")
@@ -59,7 +71,13 @@ def test_delete(tree):
     print("delete 00")
     print_tree(tree)
 
+
+def test_print(tree):
+    print("PRINT TEST")
+    tree.print()
+
 tree = RoutingBinaryTree(1)
 test_insert(tree)
 test_lookup(tree)
 test_delete(tree)
+test_print(tree)
