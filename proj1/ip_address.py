@@ -1,3 +1,12 @@
+from enum import Enum
+
+
+class Format(Enum):
+    quad_doted = 1
+    binary = 2
+    decimal = 3
+
+
 # converts an ip address in quad-doted format to it's decimal format
 def quad_doted_to_decimal(ip_address):
     bytes = ip_address.split('.')
