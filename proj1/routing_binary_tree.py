@@ -14,10 +14,24 @@ def _to_binary(ip_address, format):
 
     return binary_address
 
+
+def _remove_node(parent_node, node, default_next_hop):
+    if parent_node is not None:
+        if parent_node.left() == node:
+            # node is the left node of the parent
+            parent_node.left().set_next_hop(default_next_hop)
+        elif parent_node.right() == node:
+            # node is the right node of the parent
+            parent_node.right().set_next_hop(default_next_hop)
+
+
 class RoutingBinaryTree:
     def __init__(self, default_next_hop):
         # start with only one node with the default next-hop
         self.root = Node(default_next_hop)
+
+        # must store the default next-hop to use in the delete function
+        self.default_next_hop = default_next_hop
 
     def insert(self, prefix, next_hop):
 
@@ -66,8 +80,53 @@ class RoutingBinaryTree:
         # set the next-hop of the final node
         cur_node.set_next_hop(next_hop)
 
-    def remove(self, prefix):
-        pass
+    def delete(self, prefix):
+
+        # look for the prefix in the tree
+        # start looking for the prefix at the root of the tree
+        cur_node = self.root
+
+        # list all the visited node in order (from the first to the last)
+        visited_nodes = []
+
+        for bit in prefix:
+
+            # add the node to the visited list
+            visited_nodes.insert(0, cur_node)
+
+            if cur_node is None:
+                # didn't find the prefix
+                break
+
+            if bit is 1:
+                # move to the right
+                cur_node = cur_node.right()
+            else:
+                # move to the left
+                cur_node = cur_node.left()
+
+        if cur_node is not None:
+            # the prefix was found
+            # get the node of the prefix from the visited list
+            node = visited_nodes.pop(0)
+
+            # remove node from the tree
+            parent_node = visited_nodes[0]
+            _remove_node(parent_node, node, self.default_next_hop)
+
+            # remove all the unnecessary nodes
+            for node in visited_nodes:
+
+                if not node.left() or not node.right():
+                    # reached root node -> can not remove root node
+                    break
+
+                # check if both children are equal
+                if node.left().next_hop() == node.right().next_hop():
+                    # move the next-hop one node up
+                    node.set_next_hop(node.left().next_hop())
+                    node.set_left(None)
+                    node.set_right(None)
 
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
