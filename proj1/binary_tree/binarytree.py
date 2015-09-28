@@ -1,4 +1,18 @@
 from proj1.node import Node
+import proj1.ip_address as ip
+
+
+def _to_binary(ip_address, format):
+    if format is ip.Format.quad_doted:
+        binary_address = ip.quad_doted_to_binary(ip_address)
+    elif format is ip.Format.decimal:
+        binary_address = ip.decimal_to_binary(ip_address)
+    elif format is ip.Format.binary:
+        binary_address = ip_address
+    else:
+        raise Exception("invalid ip address format")
+
+    return binary_address
 
 
 class BinaryTree:
@@ -27,11 +41,14 @@ class BinaryTree:
         # set the next-hop of the final node
         cur_node.set_next_hop(next_hop)
 
-    def lookup(self, ip):
+    def lookup(self, ip_address, format=ip.Format.quad_doted):
+        # convert ip address to binary format
+        binary_address = _to_binary(ip_address, format)
+
         # starting point for the search
         cur_node = self.root
         hop = cur_node.next_hop()
-        for bit in ip:
+        for bit in binary_address:
             if bit is '1':
                 # memorize the hop if it is valid
                 if cur_node.next_hop() != -1:

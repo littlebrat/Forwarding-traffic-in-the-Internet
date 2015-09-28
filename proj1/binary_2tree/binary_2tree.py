@@ -1,19 +1,7 @@
 from proj1.binary_tree.binarytree import BinaryTree
+from proj1.binary_tree.binarytree import _to_binary
 from proj1.node import Node
 import proj1.ip_address as ip
-
-
-def _to_binary(ip_address, format):
-    if format is ip.Format.quad_doted:
-        binary_address = ip.quad_doted_to_binary(ip_address)
-    elif format is ip.Format.decimal:
-        binary_address = ip.decimal_to_binary(ip_address)
-    elif format is ip.Format.binary:
-        binary_address = ip_address
-    else:
-        raise Exception("invalid ip address format")
-
-    return binary_address
 
 
 def _remove_node(parent_node, node, default_next_hop):
