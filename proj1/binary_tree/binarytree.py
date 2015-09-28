@@ -49,7 +49,7 @@ class BinaryTree:
         cur_node = self.root
         hop = cur_node.next_hop()
         for bit in binary_address:
-            if bit is 1:
+            if bit is '1':
                 # memorize the hop if it is valid
                 if cur_node.next_hop() != -1:
                     hop = cur_node.next_hop()
