@@ -24,7 +24,7 @@ class BinaryTree:
     def insert(self, prefix, next_hop):
         cur_node = self.root
         for bit in prefix:
-            if bit is '1':
+            if bit is 1:
                 # move to the right
                 if cur_node.right() is None:
                     # create node if necessary
@@ -49,7 +49,7 @@ class BinaryTree:
         cur_node = self.root
         hop = cur_node.next_hop()
         for bit in binary_address:
-            if bit is '1':
+            if bit is 1:
                 # memorize the hop if it is valid
                 if cur_node.next_hop() != -1:
                     hop = cur_node.next_hop()
@@ -77,25 +77,25 @@ class BinaryTree:
         # reference to delete
         parent, side = cur_node, ''
         for bit in prefix:
-            if bit is '1':
+            if bit is 1:
                 # find if the current node has 2 children
                 if cur_node.right() is not None and cur_node.left() is not None:
-                    parent, side = cur_node, '1'
+                    parent, side = cur_node, 1
                 # move to the right
                 cur_node = cur_node.right()
             else:
                 # find if the current node has 2 children
                 if cur_node.right() is not None and cur_node.left() is not None:
-                    parent, side = cur_node, '0'
+                    parent, side = cur_node, 0
                 # move to the left
                 cur_node = cur_node.left()
         if cur_node.right() is not None or cur_node.left() is not None:
             cur_node.set_next_hop(-1)
         else:
-            if side is '1':
+            if side is 1:
                 # delete the right child of the tree
                 parent.set_right(None)
-            elif side is '0':
+            elif side is 0:
                 # delete the left child of the tree
                 parent.set_left(None)
 
