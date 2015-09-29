@@ -14,6 +14,42 @@ def _remove_node(parent_node, node, default_next_hop):
             parent_node.right().set_next_hop(default_next_hop)
 
 
+def _from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
+        """
+        :type binary_cur_node: Node
+        :type binary2_cur_node: Node
+        :type next_hop: int
+        :type left: bool
+        """
+        if binary_cur_node is None:
+            # reached a leaf in the tree
+            # set the binary 2-tree current node next-hop
+            binary2_cur_node.set_next_hop(next_hop)
+        else:
+            # move binary2 current node to the new node
+            new_node = binary_cur_node.copy()
+            # set the new node as blank in the binary 2-tree
+            new_node.unset_next_hop()
+
+            if binary2_cur_node:
+
+                if left:
+                    # new node is the left child of the binary2_cur_node
+                    binary2_cur_node.set_left(new_node)
+                else:
+                    # new node is the right child of the binary2_cur_node
+                    binary2_cur_node.set_right(new_node)
+
+                # store a new next-hop if the current node in the binary tree is not blank
+                if binary_cur_node.next_hop():
+                    next_hop = binary_cur_node.next_hop()
+
+            # move left
+            _from_binary_tree(binary_cur_node.left(), new_node, next_hop, True)
+            # move right
+            _from_binary_tree(binary_cur_node.right(), new_node, next_hop, False)
+
+
 class Binary2Tree(BinaryTree):
     def __init__(self, default_next_hop):
         super().__init__(default_next_hop)
@@ -21,6 +57,20 @@ class Binary2Tree(BinaryTree):
         # must store the default next-hop to use in the delete function
         self.default_next_hop = default_next_hop
 
+    def from_binary_tree(self, binary_tree):
+        """
+        :type binary_tree: BinaryTree
+        """
+
+        # the default next-hop of the binary tree is the next-hop of the root node
+        self.default_next_hop = binary_tree.root.next_hop()
+        self.root = binary_tree.root.copy()
+
+        # handle the left side of the tree
+        _from_binary_tree(binary_tree.root.left(), self.root, self.default_next_hop, True)
+        # handle the right side of the tree
+        _from_binary_tree(binary_tree.root.right(), self.root, self.default_next_hop, False)
+        
     def insert(self, prefix, next_hop):
 
         last_next_hop = None
