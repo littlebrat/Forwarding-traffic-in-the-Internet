@@ -23,22 +23,22 @@ class Binary2Tree(BinaryTree):
 
     def insert(self, prefix, next_hop):
 
-        last_next_hop = -1
+        last_next_hop = None
         cur_node = self.root
         for bit in prefix:
 
-            if cur_node.next_hop() != -1:
+            if cur_node.next_hop():
                 # store next-hop of the last node with next-hop found
                 last_next_hop = cur_node.next_hop()
                 # clear node next-hop
-                cur_node.set_next_hop(-1)
+                cur_node.unset_next_hop()
 
             if bit is 1:
                 # is to move to the right
 
                 # create node if necessary
                 if cur_node.right() is None:
-                    cur_node.set_right(Node(-1))
+                    cur_node.set_right(Node())
 
                 # check the other side of the node
                 # create node if necessary
@@ -54,7 +54,7 @@ class Binary2Tree(BinaryTree):
 
                 # create node if necessary
                 if cur_node.left() is None:
-                    cur_node.set_left(Node(-1))
+                    cur_node.set_left(Node())
 
                 # check the other side of the node
                 # create node if necessary
@@ -93,7 +93,7 @@ class Binary2Tree(BinaryTree):
                 # move to the left
                 cur_node = cur_node.left()
 
-        if cur_node is not None and cur_node.next_hop() != -1:
+        if cur_node is not None and cur_node.next_hop():
             # the prefix was found
             # remove node from the tree
             parent_node = visited_nodes[0]
@@ -121,7 +121,7 @@ class Binary2Tree(BinaryTree):
         binary_address = _to_binary(ip_address, format)
 
         # start with no next-hop
-        next_hop = -1
+        next_hop = None
         # start at the tree root
         cur_node = self.root
         for bit in binary_address:
@@ -132,7 +132,7 @@ class Binary2Tree(BinaryTree):
                 break
 
             # store a new next hop only
-            next_hop = cur_node.next_hop() if cur_node.next_hop() != -1 else next_hop
+            next_hop = cur_node.next_hop() if cur_node.next_hop() else next_hop
 
             if bit is '1':
                 # move right

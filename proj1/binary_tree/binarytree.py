@@ -28,14 +28,14 @@ class BinaryTree:
                 # move to the right
                 if cur_node.right() is None:
                     # create node if necessary
-                    cur_node.set_right(Node(-1))
+                    cur_node.set_right(Node())
                 # move the current node to the right node
                 cur_node = cur_node.right()
             else:
                 # move to the left
                 if cur_node.left() is None:
                     # create node if necessary
-                    cur_node.set_left(Node(-1))
+                    cur_node.set_left(Node())
                 # move the current node to the left node
                 cur_node = cur_node.left()
         # set the next-hop of the final node
@@ -51,7 +51,7 @@ class BinaryTree:
         for bit in binary_address:
             if bit is '1':
                 # memorize the hop if it is valid
-                if cur_node.next_hop() != -1:
+                if cur_node.next_hop():
                     hop = cur_node.next_hop()
                 # move to the right
                 if cur_node.right() is None:
@@ -62,7 +62,7 @@ class BinaryTree:
                 cur_node = cur_node.right()
             else:
                 # memorize the hop if it is valid
-                if cur_node.next_hop() != -1:
+                if cur_node.next_hop():
                     hop = cur_node.next_hop()
                 # move to the left
                 if cur_node.left() is None:
@@ -90,7 +90,7 @@ class BinaryTree:
                 # move to the left
                 cur_node = cur_node.left()
         if cur_node.right() is not None or cur_node.left() is not None:
-            cur_node.set_next_hop(-1)
+            cur_node.unset_next_hop()
         else:
             if side is 1:
                 # delete the right child of the tree
@@ -104,7 +104,7 @@ class BinaryTree:
 
     def _print_node(self, node, bits):
         if node is not None:
-            if node.next_hop() != -1:
+            if node.next_hop():
                 print(bits, node.next_hop())
 
             # print left node

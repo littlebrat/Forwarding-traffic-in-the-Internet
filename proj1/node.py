@@ -1,7 +1,7 @@
 class Node:
     id_count = 0
 
-    def __init__(self, next_hop=-1, left=None, right=None):
+    def __init__(self, next_hop=None, left=None, right=None):
         self._next_hop = next_hop
         self._left = left
         self._right = right
@@ -13,6 +13,9 @@ class Node:
 
     def set_next_hop(self, next_hop):
         self._next_hop = next_hop
+
+    def unset_next_hop(self):
+        self._next_hop = None
 
     def left(self):
         return self._left
