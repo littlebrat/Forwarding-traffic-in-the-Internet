@@ -25,6 +25,7 @@ def _from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
             # reached a leaf in the tree
             # set the binary 2-tree current node next-hop
             binary2_cur_node.set_next_hop(next_hop)
+
         else:
             # move binary2 current node to the new node
             new_node = binary_cur_node.copy()
@@ -43,6 +44,14 @@ def _from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
                 # store a new next-hop if the current node in the binary tree is not blank
                 if binary_cur_node.next_hop():
                     next_hop = binary_cur_node.next_hop()
+
+            # create new nodes if the current node of the normal binary tree has exactly one child
+            if binary_cur_node.left() and not binary_cur_node.right():
+                # create right node
+                new_node.set_right(Node(next_hop))
+            elif binary_cur_node.right() and not binary_cur_node.left():
+                # create left node
+                new_node.set_left(Node(next_hop))
 
             # move left
             _from_binary_tree(binary_cur_node.left(), new_node, next_hop, True)
