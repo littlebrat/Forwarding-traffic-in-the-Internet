@@ -50,7 +50,7 @@ class Node:
         return node
 
     def __str__(self):
-        return '(' + str(self._id) + ', ' + str(self._next_hop) + ')'
+        return '(' + str(self._id) + ', ' + str(self._next_hop if self._next_hop else '') + ')'
 
     def __eq__(self, other):
         """
