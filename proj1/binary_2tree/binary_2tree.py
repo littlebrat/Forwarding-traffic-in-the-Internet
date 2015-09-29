@@ -49,14 +49,19 @@ def _from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
             if binary_cur_node.left() and not binary_cur_node.right():
                 # create right node
                 new_node.set_right(Node(next_hop))
+                # move to left node
+                _from_binary_tree(binary_cur_node.left(), new_node, next_hop, True)
+
             elif binary_cur_node.right() and not binary_cur_node.left():
                 # create left node
                 new_node.set_left(Node(next_hop))
-
-            # move left
-            _from_binary_tree(binary_cur_node.left(), new_node, next_hop, True)
-            # move right
-            _from_binary_tree(binary_cur_node.right(), new_node, next_hop, False)
+                # move to right node
+                _from_binary_tree(binary_cur_node.right(), new_node, next_hop, False)
+            else:
+                # move to left node
+                _from_binary_tree(binary_cur_node.left(), new_node, next_hop, True)
+                # move to right node
+                _from_binary_tree(binary_cur_node.right(), new_node, next_hop, False)
 
 
 class Binary2Tree(BinaryTree):
@@ -74,6 +79,7 @@ class Binary2Tree(BinaryTree):
         # the default next-hop of the binary tree is the next-hop of the root node
         self.default_next_hop = binary_tree.root.next_hop()
         self.root = binary_tree.root.copy()
+        self.root.unset_next_hop()
 
         # handle the left side of the tree
         _from_binary_tree(binary_tree.root.left(), self.root, self.default_next_hop, True)
