@@ -15,6 +15,16 @@ def _to_binary(ip_address, format):
     return binary_address
 
 
+def _inherited(node, parents):
+        if node.next_hop():
+            return node.next_hop()
+        else:
+            # the list of parents of the parent(node) is the list of parent nodes without the
+            # first parent node in the list
+            # inherited(parent(node), parents of parent(node))
+            return _inherited(parents[0], parents[1:]) if len(parents) > 0 else None
+
+
 class BinaryTree:
 
     def __init__(self, default_next_hop):
@@ -28,14 +38,14 @@ class BinaryTree:
                 # move to the right
                 if cur_node.right() is None:
                     # create node if necessary
-                    cur_node.set_right(Node(-1))
+                    cur_node.set_right(Node())
                 # move the current node to the right node
                 cur_node = cur_node.right()
             else:
                 # move to the left
                 if cur_node.left() is None:
                     # create node if necessary
-                    cur_node.set_left(Node(-1))
+                    cur_node.set_left(Node())
                 # move the current node to the left node
                 cur_node = cur_node.left()
         # set the next-hop of the final node
@@ -49,9 +59,9 @@ class BinaryTree:
         cur_node = self.root
         hop = cur_node.next_hop()
         for bit in binary_address:
-            if bit is 1:
+            if bit is '1':
                 # memorize the hop if it is valid
-                if cur_node.next_hop() != -1:
+                if cur_node.next_hop():
                     hop = cur_node.next_hop()
                 # move to the right
                 if cur_node.right() is None:
@@ -62,7 +72,7 @@ class BinaryTree:
                 cur_node = cur_node.right()
             else:
                 # memorize the hop if it is valid
-                if cur_node.next_hop() != -1:
+                if cur_node.next_hop():
                     hop = cur_node.next_hop()
                 # move to the left
                 if cur_node.left() is None:
@@ -90,7 +100,7 @@ class BinaryTree:
                 # move to the left
                 cur_node = cur_node.left()
         if cur_node.right() is not None or cur_node.left() is not None:
-            cur_node.set_next_hop(-1)
+            cur_node.unset_next_hop()
         else:
             if side is 1:
                 # delete the right child of the tree
@@ -99,12 +109,48 @@ class BinaryTree:
                 # delete the left child of the tree
                 parent.set_left(None)
 
-    def __str__(self):
+    # for each node N (root to leaves) {
+    #     if N has exactly one child node,
+    #         create the missing child node
+    #     if nexthops(N) = ∅,
+    #         nexthops(N) ← inherited(N)
+    # }
+    def _to_Binary2Tree(self, cur_node, parents, inherited_next_hop):
+
+        if cur_node:
+            # create missing child if the current node has exactly one child
+            if cur_node.left() and not cur_node.right():
+                # create the left child
+                cur_node.set_left(Node())
+            elif cur_node.right() and not cur_node.left():
+                # create the right i
+                cur_node.set_right(Node())
+
+            if not cur_node.next_hop():
+                cur_node.set_next_hop(inherited_next_hop)
+            else:
+                inherited_next_hop = cur_node.next_hop()
+
+            # add current node to the lis tof parents
+            parents = [cur_node] + parents[:]
+
+            # move to the left node
+            self._to_Binary2Tree(cur_node.left(), parents, inherited_next_hop)
+            # move to the right node
+            self._to_Binary2Tree(cur_node.right(), parents, inherited_next_hop)
+
+
+    def to_Binary2Tree(self):
+        self._to_Binary2Tree(self.root, [], None)
+        return self
+
+    # implements the ORTC algorithm to compress the binary tree
+    def compress(self):
         cur_node = self.root
 
     def _print_node(self, node, bits):
         if node is not None:
-            if node.next_hop() != -1:
+            if node.next_hop():
                 print(bits, node.next_hop())
 
             # print left node

@@ -14,6 +14,56 @@ def _remove_node(parent_node, node, default_next_hop):
             parent_node.right().set_next_hop(default_next_hop)
 
 
+def _from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
+        """
+        :type binary_cur_node: Node
+        :type binary2_cur_node: Node
+        :type next_hop: int
+        :type left: bool
+        """
+        if binary_cur_node is None:
+            # reached a leaf in the tree
+            # set the binary 2-tree current node next-hop
+            binary2_cur_node.set_next_hop(next_hop)
+
+        else:
+            # move binary2 current node to the new node
+            new_node = binary_cur_node.copy()
+            # set the new node as blank in the binary 2-tree
+            new_node.unset_next_hop()
+
+            if binary2_cur_node:
+
+                if left:
+                    # new node is the left child of the binary2_cur_node
+                    binary2_cur_node.set_left(new_node)
+                else:
+                    # new node is the right child of the binary2_cur_node
+                    binary2_cur_node.set_right(new_node)
+
+                # store a new next-hop if the current node in the binary tree is not blank
+                if binary_cur_node.next_hop():
+                    next_hop = binary_cur_node.next_hop()
+
+            # create new nodes if the current node of the normal binary tree has exactly one child
+            if binary_cur_node.left() and not binary_cur_node.right():
+                # create right node
+                new_node.set_right(Node(next_hop))
+                # move to left node
+                _from_binary_tree(binary_cur_node.left(), new_node, next_hop, True)
+
+            elif binary_cur_node.right() and not binary_cur_node.left():
+                # create left node
+                new_node.set_left(Node(next_hop))
+                # move to right node
+                _from_binary_tree(binary_cur_node.right(), new_node, next_hop, False)
+            else:
+                # move to left node
+                _from_binary_tree(binary_cur_node.left(), new_node, next_hop, True)
+                # move to right node
+                _from_binary_tree(binary_cur_node.right(), new_node, next_hop, False)
+
+
 class Binary2Tree(BinaryTree):
     def __init__(self, default_next_hop):
         super().__init__(default_next_hop)
@@ -21,24 +71,39 @@ class Binary2Tree(BinaryTree):
         # must store the default next-hop to use in the delete function
         self.default_next_hop = default_next_hop
 
+    def from_binary_tree(self, binary_tree):
+        """
+        :type binary_tree: BinaryTree
+        """
+
+        # the default next-hop of the binary tree is the next-hop of the root node
+        self.default_next_hop = binary_tree.root.next_hop()
+        self.root = binary_tree.root.copy()
+        self.root.unset_next_hop()
+
+        # handle the left side of the tree
+        _from_binary_tree(binary_tree.root.left(), self.root, self.default_next_hop, True)
+        # handle the right side of the tree
+        _from_binary_tree(binary_tree.root.right(), self.root, self.default_next_hop, False)
+        
     def insert(self, prefix, next_hop):
 
-        last_next_hop = -1
+        last_next_hop = None
         cur_node = self.root
         for bit in prefix:
 
-            if cur_node.next_hop() != -1:
+            if cur_node.next_hop():
                 # store next-hop of the last node with next-hop found
                 last_next_hop = cur_node.next_hop()
                 # clear node next-hop
-                cur_node.set_next_hop(-1)
+                cur_node.unset_next_hop()
 
             if bit is 1:
                 # is to move to the right
 
                 # create node if necessary
                 if cur_node.right() is None:
-                    cur_node.set_right(Node(-1))
+                    cur_node.set_right(Node())
 
                 # check the other side of the node
                 # create node if necessary
@@ -54,7 +119,7 @@ class Binary2Tree(BinaryTree):
 
                 # create node if necessary
                 if cur_node.left() is None:
-                    cur_node.set_left(Node(-1))
+                    cur_node.set_left(Node())
 
                 # check the other side of the node
                 # create node if necessary
@@ -93,7 +158,7 @@ class Binary2Tree(BinaryTree):
                 # move to the left
                 cur_node = cur_node.left()
 
-        if cur_node is not None and cur_node.next_hop() != -1:
+        if cur_node is not None and cur_node.next_hop():
             # the prefix was found
             # remove node from the tree
             parent_node = visited_nodes[0]
@@ -121,7 +186,7 @@ class Binary2Tree(BinaryTree):
         binary_address = _to_binary(ip_address, format)
 
         # start with no next-hop
-        next_hop = -1
+        next_hop = None
         # start at the tree root
         cur_node = self.root
         for bit in binary_address:
@@ -132,7 +197,7 @@ class Binary2Tree(BinaryTree):
                 break
 
             # store a new next hop only
-            next_hop = cur_node.next_hop() if cur_node.next_hop() != -1 else next_hop
+            next_hop = cur_node.next_hop() if cur_node.next_hop() else next_hop
 
             if bit is '1':
                 # move right
