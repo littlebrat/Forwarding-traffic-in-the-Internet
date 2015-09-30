@@ -1,4 +1,5 @@
 from proj1.node import Node
+from proj1.prefix import Prefix
 import proj1.ip_address as ip
 
 
@@ -81,9 +82,18 @@ def _to_binary_2tree(cur_node, parents, inherited_next_hop):
 
 class BinaryTree:
 
-    def __init__(self, default_next_hop):
+    def __init__(self, default_next_hop = None):
         # start with only one node with the default next-hop
         self.root = Node(default_next_hop)
+
+    def from_file(self, path):
+        with open(path) as file:
+            for line in file:
+                words = line.split()
+                if words[0] is '*':
+                    self.root.set_next_hop(words[1])
+                else:
+                    self.insert(Prefix(words[0]),words[1])
 
     def insert(self, prefix, next_hop):
         cur_node = self.root
