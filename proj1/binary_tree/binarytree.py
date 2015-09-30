@@ -111,22 +111,34 @@ def _get_next_hops(node: Node):
         return node.next_hop()
 
 
-def _choose_next_hop(node: Node, next_hop):
+def _choose_next_hop(node: Node, parent: Node, next_hop, left: bool):
 
     if node:
         # check if the inherent next-hop is in the next-hop set of the node
         if next_hop in node.next_hop():
             # the node doesn't need it's own next-hop
-            node.unset_next_hop()
+
+            if len(node.next_hop()) == 1:
+                # this node is not necessary anymore: remove the node
+                if left:
+                    parent.set_left(None)
+                else:
+                    parent.set_right(None)
+                node.set_left(None)
+                node.set_right(None)
+
+            else:
+                # this node is necessary and is a blank node
+                node.unset_next_hop()
         else:
             # choose one of the possible next-hops of the node
             node.set_next_hop(node.next_hop().pop())
             next_hop = node.next_hop()
 
         # move to the left node
-        _choose_next_hop(node.left(), next_hop)
+        _choose_next_hop(node.left(), node, next_hop, True)
         # move to the right node
-        _choose_next_hop(node.right(), next_hop)
+        _choose_next_hop(node.right(), node, next_hop, False)
 
 
 class BinaryTree:
@@ -224,9 +236,9 @@ class BinaryTree:
         # set the next-hop of the root as one of next-hops in it's set
         self.root.set_next_hop(self.root.next_hop().pop())
         # choose the next-hop of the left node
-        _choose_next_hop(self.root.left(), self.root.next_hop())
+        _choose_next_hop(self.root.left(), self.root, self.root.next_hop(), True)
         # choose the next-hop of the right node
-        _choose_next_hop(self.root.right(), self.root.next_hop())
+        _choose_next_hop(self.root.right(), self.root, self.root.next_hop(), False)
 
     def print_table(self):
         _print_table_node(self.root, '')
