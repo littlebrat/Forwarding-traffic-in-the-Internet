@@ -54,29 +54,27 @@ def _print_node(node, level):
         _print_node(node.left(), level + 1)
 
 
-def _to_binary_2tree(cur_node, parents, inherited_next_hop):
+def _compress_first_step(node, next_hop):
 
-    if cur_node:
-        # create missing child if the current node has exactly one child
-        if cur_node.left() and not cur_node.right():
-            # create the left child
-            cur_node.set_left(Node())
-        elif cur_node.right() and not cur_node.left():
-            # create the right i
-            cur_node.set_right(Node())
+    if node:
+        # if node has only one child: create the missing child
+        if node.left() and not node.right():
+            # this node has only a left child: create the right child
+            node.set_right(Node(next_hop))
+        elif node.right() and not node.left():
+            # this node has only a right child: create the left child
+            node.set_left(Node(next_hop))
 
-        if not cur_node.next_hop():
-            cur_node.set_next_hop(inherited_next_hop)
-        else:
-            inherited_next_hop = cur_node.next_hop()
+        if node.next_hop():
+            # store the current next-hop for nodes under this node
+            next_hop = node.next_hop()
+            # unset this node next-hop
+            node.unset_next_hop()
 
-        # add current node to the lis tof parents
-        parents = [cur_node] + parents[:]
-
-        # move to the left node
-        _to_binary_2tree(cur_node.left(), parents, inherited_next_hop)
-        # move to the right node
-        _to_binary_2tree(cur_node.right(), parents, inherited_next_hop)
+        # go to the left node
+        _compress_first_step(node.left(), next_hop)
+        # go to the right node
+        _compress_first_step(node.right(), next_hop)
 
 
 class BinaryTree:
@@ -163,9 +161,8 @@ class BinaryTree:
                 # delete the left child of the tree
                 parent.set_left(None)
 
-    def to_binary_2tree(self):
-        _to_binary_2tree(self.root, [], None)
-        return self
+    def compress(self):
+        _compress_first_step(self.root, self.root.next_hop())
 
     def print_table(self):
         _print_table_node(self.root, '')
