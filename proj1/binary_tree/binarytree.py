@@ -54,6 +54,31 @@ def _print_node(node, level):
         _print_node(node.left(), level + 1)
 
 
+def _to_binary_2tree(cur_node, parents, inherited_next_hop):
+
+    if cur_node:
+        # create missing child if the current node has exactly one child
+        if cur_node.left() and not cur_node.right():
+            # create the left child
+            cur_node.set_left(Node())
+        elif cur_node.right() and not cur_node.left():
+            # create the right i
+            cur_node.set_right(Node())
+
+        if not cur_node.next_hop():
+            cur_node.set_next_hop(inherited_next_hop)
+        else:
+            inherited_next_hop = cur_node.next_hop()
+
+        # add current node to the lis tof parents
+        parents = [cur_node] + parents[:]
+
+        # move to the left node
+        _to_binary_2tree(cur_node.left(), parents, inherited_next_hop)
+        # move to the right node
+        _to_binary_2tree(cur_node.right(), parents, inherited_next_hop)
+
+
 class BinaryTree:
 
     def __init__(self, default_next_hop):
@@ -138,38 +163,8 @@ class BinaryTree:
                 # delete the left child of the tree
                 parent.set_left(None)
 
-    # for each node N (root to leaves) {
-    #     if N has exactly one child node,
-    #         create the missing child node
-    #     if nexthops(N) = ∅,
-    #         nexthops(N) ← inherited(N)
-    # }
-    def _to_Binary2Tree(self, cur_node, parents, inherited_next_hop):
-
-        if cur_node:
-            # create missing child if the current node has exactly one child
-            if cur_node.left() and not cur_node.right():
-                # create the left child
-                cur_node.set_left(Node())
-            elif cur_node.right() and not cur_node.left():
-                # create the right i
-                cur_node.set_right(Node())
-
-            if not cur_node.next_hop():
-                cur_node.set_next_hop(inherited_next_hop)
-            else:
-                inherited_next_hop = cur_node.next_hop()
-
-            # add current node to the lis tof parents
-            parents = [cur_node] + parents[:]
-
-            # move to the left node
-            self._to_Binary2Tree(cur_node.left(), parents, inherited_next_hop)
-            # move to the right node
-            self._to_Binary2Tree(cur_node.right(), parents, inherited_next_hop)
-
-    def to_Binary2Tree(self):
-        self._to_Binary2Tree(self.root, [], None)
+    def to_binary_2tree(self):
+        _to_binary_2tree(self.root, [], None)
         return self
 
     def print_table(self):
