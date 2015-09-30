@@ -111,6 +111,24 @@ def _get_next_hops(node: Node):
         return node.next_hop()
 
 
+def _choose_next_hop(node: Node, next_hop):
+
+    if node:
+        # check if the inherent next-hop is in the next-hop set of the node
+        if next_hop in node.next_hop():
+            # the node doesn't need it's own next-hop
+            node.unset_next_hop()
+        else:
+            # choose one of the possible next-hops of the node
+            node.set_next_hop(node.next_hop().pop())
+            next_hop = node.next_hop()
+
+        # move to the left node
+        _choose_next_hop(node.left(), next_hop)
+        # move to the right node
+        _choose_next_hop(node.right(), next_hop)
+
+
 class BinaryTree:
 
     def __init__(self, default_next_hop):
@@ -196,8 +214,19 @@ class BinaryTree:
                 parent.set_left(None)
 
     def compress(self):
+        # first step
         _compress_first_step(self.root, None, self.root.next_hop())
+
+        # second step
         _get_next_hops(self.root)
+
+        # third step
+        # set the next-hop of the root as one of next-hops in it's set
+        self.root.set_next_hop(self.root.next_hop().pop())
+        # choose the next-hop of the left node
+        _choose_next_hop(self.root.left(), self.root.next_hop())
+        # choose the next-hop of the right node
+        _choose_next_hop(self.root.right(), self.root.next_hop())
 
     def print_table(self):
         _print_table_node(self.root, '')
