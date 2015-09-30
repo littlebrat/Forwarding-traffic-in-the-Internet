@@ -54,9 +54,14 @@ def _print_node(node, level):
         _print_node(node.left(), level + 1)
 
 
-def _compress_first_step(node, next_hop):
+def _compress_first_step(node: Node, parent: Node, next_hop: int):
 
-    if node:
+    if node is None:
+        # reached a leaf in the tree
+        # store in the leaf a set of next-hop for this prefix
+        # this accesses the private variable intentionally
+        parent._next_hop = {next_hop}
+    else:
         # if node has only one child: create the missing child
         if node.left() and not node.right():
             # this node has only a left child: create the right child
@@ -72,9 +77,9 @@ def _compress_first_step(node, next_hop):
             node.unset_next_hop()
 
         # go to the left node
-        _compress_first_step(node.left(), next_hop)
+        _compress_first_step(node.left(), node, next_hop)
         # go to the right node
-        _compress_first_step(node.right(), next_hop)
+        _compress_first_step(node.right(), node, next_hop)
 
 
 class BinaryTree:
@@ -162,7 +167,7 @@ class BinaryTree:
                 parent.set_left(None)
 
     def compress(self):
-        _compress_first_step(self.root, self.root.next_hop())
+        _compress_first_step(self.root, None, self.root.next_hop())
 
     def print_table(self):
         _print_table_node(self.root, '')
