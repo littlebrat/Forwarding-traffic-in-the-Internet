@@ -16,13 +16,65 @@ def _to_binary(ip_address, format):
 
 
 def _inherited(node, parents):
+    if node.next_hop():
+        return node.next_hop()
+    else:
+        # the list of parents of the parent(node) is the list of parent nodes without the
+        # first parent node in the list
+        # inherited(parent(node), parents of parent(node))
+        return _inherited(parents[0], parents[1:]) if len(parents) > 0 else None
+
+
+def _print_table_node(node, bits):
+    if node is not None:
         if node.next_hop():
-            return node.next_hop()
-        else:
-            # the list of parents of the parent(node) is the list of parent nodes without the
-            # first parent node in the list
-            # inherited(parent(node), parents of parent(node))
-            return _inherited(parents[0], parents[1:]) if len(parents) > 0 else None
+            print(bits, node.next_hop())
+
+        # print left node
+        _print_table_node(node.left(), bits + '0')
+
+        # print right node
+        _print_table_node(node.right(), bits + '1')
+
+
+def _print_node(node, level):
+    if node:
+
+        # print right node
+        _print_node(node.right(), level + 1)
+
+        # print the same number of tabs as the level of the node
+        for i in range(0, 2*level):
+            print('\t', end='')
+
+        # print the node next-hop
+        print(node)
+
+        # print left node
+        _print_node(node.left(), level + 1)
+
+
+def _compress_first_step(node, next_hop):
+
+    if node:
+        # if node has only one child: create the missing child
+        if node.left() and not node.right():
+            # this node has only a left child: create the right child
+            node.set_right(Node(next_hop))
+        elif node.right() and not node.left():
+            # this node has only a right child: create the left child
+            node.set_left(Node(next_hop))
+
+        if node.next_hop():
+            # store the current next-hop for nodes under this node
+            next_hop = node.next_hop()
+            # unset this node next-hop
+            node.unset_next_hop()
+
+        # go to the left node
+        _compress_first_step(node.left(), next_hop)
+        # go to the right node
+        _compress_first_step(node.right(), next_hop)
 
 
 class BinaryTree:
@@ -109,55 +161,12 @@ class BinaryTree:
                 # delete the left child of the tree
                 parent.set_left(None)
 
-    # for each node N (root to leaves) {
-    #     if N has exactly one child node,
-    #         create the missing child node
-    #     if nexthops(N) = ∅,
-    #         nexthops(N) ← inherited(N)
-    # }
-    def _to_Binary2Tree(self, cur_node, parents, inherited_next_hop):
-
-        if cur_node:
-            # create missing child if the current node has exactly one child
-            if cur_node.left() and not cur_node.right():
-                # create the left child
-                cur_node.set_left(Node())
-            elif cur_node.right() and not cur_node.left():
-                # create the right i
-                cur_node.set_right(Node())
-
-            if not cur_node.next_hop():
-                cur_node.set_next_hop(inherited_next_hop)
-            else:
-                inherited_next_hop = cur_node.next_hop()
-
-            # add current node to the lis tof parents
-            parents = [cur_node] + parents[:]
-
-            # move to the left node
-            self._to_Binary2Tree(cur_node.left(), parents, inherited_next_hop)
-            # move to the right node
-            self._to_Binary2Tree(cur_node.right(), parents, inherited_next_hop)
-
-
-    def to_Binary2Tree(self):
-        self._to_Binary2Tree(self.root, [], None)
-        return self
-
-    # implements the ORTC algorithm to compress the binary tree
     def compress(self):
-        cur_node = self.root
+        _compress_first_step(self.root, self.root.next_hop())
 
-    def _print_node(self, node, bits):
-        if node is not None:
-            if node.next_hop():
-                print(bits, node.next_hop())
-
-            # print left node
-            self._print_node(node.left(), bits + '0')
-
-            # print right node
-            self._print_node(node.right(), bits + '1')
+    def print_table(self):
+        _print_table_node(self.root, '')
 
     def print(self):
-        self._print_node(self.root, '')
+        _print_node(self.root, 0)
+
