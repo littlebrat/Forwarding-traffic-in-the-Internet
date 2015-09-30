@@ -96,9 +96,9 @@ def _get_next_hops(node: Node):
     :rtype : set
     """
 
-    if node is None:
-        # return empty set
-        return {}
+    if node.next_hop():
+        # reached a leaf
+        return node.next_hop()
     else:
         # get the next-hops of the left node
         left_next_hops = _get_next_hops(node.left())
