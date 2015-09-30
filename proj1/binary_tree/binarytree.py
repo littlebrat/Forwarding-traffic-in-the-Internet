@@ -82,6 +82,35 @@ def _compress_first_step(node: Node, parent: Node, next_hop: int):
         _compress_first_step(node.right(), node, next_hop)
 
 
+def __operation(next_hops1: set, next_hops2: set):
+    intersection = next_hops1.intersection(next_hops2)
+    if len(intersection) == 0:
+        new_set = next_hops1.union(next_hops2)
+    else:
+        new_set = intersection
+    return new_set
+
+
+def _get_next_hops(node: Node):
+    """
+    :rtype : set
+    """
+
+    if node is None:
+        # return empty set
+        return {}
+    else:
+        # get the next-hops of the left node
+        left_next_hops = _get_next_hops(node.left())
+        # get the next-hops of the right node
+        right_next_hops = _get_next_hops(node.right())
+
+        # compute the current next-hop set
+        node._next_hop = __operation(left_next_hops, right_next_hops)
+        # return the set of next-hops of this node
+        return node.next_hop()
+
+
 class BinaryTree:
 
     def __init__(self, default_next_hop):
@@ -168,6 +197,7 @@ class BinaryTree:
 
     def compress(self):
         _compress_first_step(self.root, None, self.root.next_hop())
+        _get_next_hops(self.root)
 
     def print_table(self):
         _print_table_node(self.root, '')
