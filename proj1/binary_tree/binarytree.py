@@ -58,7 +58,9 @@ def _compress_first_step(node: Node, parent: Node, next_hop: int):
 
     if node is None:
         # reached a leaf in the tree
-        parent.set_next_hop(next_hop)
+        # store in the leaf a set of next-hop for this prefix
+        # this accesses the private variable intentionally
+        parent._next_hop = {next_hop}
     else:
         # if node has only one child: create the missing child
         if node.left() and not node.right():
