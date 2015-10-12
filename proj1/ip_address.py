@@ -83,3 +83,16 @@ def binary_to_quad_doted(ip_address):
     quad_doted += str(int(byte, base=2))
 
     return quad_doted
+
+
+def to_binary(ip_address, format):
+    if format is ip.Format.quad_doted:
+        binary_address = ip.quad_doted_to_binary(ip_address)
+    elif format is ip.Format.decimal:
+        binary_address = ip.decimal_to_binary(ip_address)
+    elif format is ip.Format.binary:
+        binary_address = ip_address
+    else:
+        raise Exception("invalid ip address format")
+
+    return binary_address
