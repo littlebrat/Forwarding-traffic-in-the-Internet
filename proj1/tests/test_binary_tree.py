@@ -11,8 +11,8 @@ def find_height(root):
     if root is None:
         return 0
     
-    left_height = find_height(root.left())
-    right_height = find_height(root.right())
+    left_height = find_height(root.left)
+    right_height = find_height(root.righ)
     
     return (left_height + 1) if left_height > right_height else (right_height + 1)
 
@@ -21,7 +21,7 @@ def print_node(node, level):
     if node:
 
         # print right node
-        print_node(node.right(), level + 1)
+        print_node(node.right, level + 1)
 
         # print the same number of tabs as the level of the node
         for i in range(0, 2*level):
@@ -31,7 +31,7 @@ def print_node(node, level):
         print(node)
 
         # print left node
-        print_node(node.left(), level + 1)
+        print_node(node.left, level + 1)
 
 
 def print_tree(tree):
@@ -44,14 +44,14 @@ def print_tree_as_list(tree):
     while node:
         
         # store the nodes children in the queue
-        if node.left() is not None:
-            nodes.insert(0, node.left())
-        if node.right() is not None:
-            nodes.insert(0, node.right())
+        if node.left is not None:
+            nodes.insert(0, node.left)
+        if node.right is not None:
+            nodes.insert(0, node.right)
 
         print("node: ", node)
-        print("left: ", node.left())
-        print("right: ", node.right())
+        print("left: ", node.left)
+        print("right: ", node.right)
         print()
 
         if len(nodes) == 0:
