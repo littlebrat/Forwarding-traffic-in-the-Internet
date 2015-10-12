@@ -8,26 +8,42 @@ class Node:
         self._id = Node._id_count
         Node._id_count += 1
 
+    @property
     def next_hop(self):
         return self._next_hop
 
-    def set_next_hop(self, next_hop):
-        self._next_hop = next_hop
+    @next_hop.setter
+    def next_hop(self, value):
+        self.next_hop = value
 
-    def unset_next_hop(self):
-        self._next_hop = None
+    def clear_next_hop(self):
+        self.next_hop = None
 
+    @property
     def left(self):
         return self._left
 
-    def set_left(self, left):
-        self._left = left
+    @left.setter
+    def left(self, node):
+        self._left = node
 
+    def clear_left(self):
+        self.left = None
+
+    @property
     def right(self):
         return self._right
 
-    def set_right(self, right):
-        self._right = right
+    @right.setter
+    def right(self, node):
+        self._right = node
+
+    def clear_right(self):
+        self.right = None
+
+    def clear_children(self):
+        self.left = None
+        self.right = None
 
     def copy(self, dest_node=None):
         """
@@ -39,9 +55,9 @@ class Node:
         """
 
         if dest_node is None:
-            node = Node(self.next_hop())
+            node = Node(self.next_hop)
         else:
-            dest_node.set_next_hop(self.next_hop())
+            dest_node.next_hop = self.next_hop
             # return the destination node
             node = dest_node
 
@@ -50,7 +66,7 @@ class Node:
         return node
 
     def __str__(self):
-        return '(' + str(self._id) + ', ' + str(self._next_hop if self._next_hop else '') + ')'
+        return '(' + str(self._id) + ', ' + str(self.next_hop if self.next_hop else '') + ')'
 
     def __eq__(self, other):
         """
