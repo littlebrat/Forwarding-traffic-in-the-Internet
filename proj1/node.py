@@ -14,7 +14,7 @@ class Node:
 
     @next_hop.setter
     def next_hop(self, value):
-        self.next_hop = value
+        self._next_hop = value
 
     def clear_next_hop(self):
         self.next_hop = None
