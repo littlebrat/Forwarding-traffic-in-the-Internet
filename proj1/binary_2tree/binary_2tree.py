@@ -1,20 +1,19 @@
 from proj1.binary_tree.binarytree import BinaryTree
-from proj1.binary_tree.binarytree import _to_binary
+from proj1.ip_address import to_binary
 from proj1.node import Node
 import proj1.ip_address as ip
 
 
-def _remove_node(parent_node, node, default_next_hop):
-    if parent_node is not None:
-        if parent_node.left == node:
-            # node is the left node of the parent
-            parent_node.left.next_hop = default_next_hop
-        elif parent_node.right == node:
-            # node is the right node of the parent
-            parent_node.right.next_hop = default_next_hop
+class Binary2Tree(BinaryTree):
 
+    def __init__(self, default_next_hop):
+        super().__init__(default_next_hop)
 
-def _from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
+        # must store the default next-hop to use in the delete function
+        self.default_next_hop = default_next_hop
+
+    @staticmethod
+    def __from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
         """
         :type binary_cur_node: Node
         :type binary2_cur_node: Node
@@ -50,26 +49,18 @@ def _from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
                 # create right node
                 new_node.right = Node(next_hop)
                 # move to left node
-                _from_binary_tree(binary_cur_node.left, new_node, next_hop, True)
+                Binary2Tree.__from_binary_tree(binary_cur_node.left, new_node, next_hop, True)
 
             elif binary_cur_node.right and not binary_cur_node.left:
                 # create left node
                 new_node.left = Node(next_hop)
                 # move to right node
-                _from_binary_tree(binary_cur_node.right, new_node, next_hop, False)
+                Binary2Tree.__from_binary_tree(binary_cur_node.right, new_node, next_hop, False)
             else:
                 # move to left node
-                _from_binary_tree(binary_cur_node.left, new_node, next_hop, True)
+                Binary2Tree.__from_binary_tree(binary_cur_node.left, new_node, next_hop, True)
                 # move to right node
-                _from_binary_tree(binary_cur_node.right, new_node, next_hop, False)
-
-
-class Binary2Tree(BinaryTree):
-    def __init__(self, default_next_hop):
-        super().__init__(default_next_hop)
-
-        # must store the default next-hop to use in the delete function
-        self.default_next_hop = default_next_hop
+                Binary2Tree.__from_binary_tree(binary_cur_node.right, new_node, next_hop, False)
 
     def from_binary_tree(self, binary_tree):
         """
@@ -82,9 +73,9 @@ class Binary2Tree(BinaryTree):
         self.root.clear_next_hop()
 
         # handle the left side of the tree
-        _from_binary_tree(binary_tree.root.left, self.root, self.default_next_hop, True)
+        Binary2Tree.__from_binary_tree(binary_tree.root.left, self.root, self.default_next_hop, True)
         # handle the right side of the tree
-        _from_binary_tree(binary_tree.root.right, self.root, self.default_next_hop, False)
+        Binary2Tree.__from_binary_tree(binary_tree.root.right, self.root, self.default_next_hop, False)
         
     def insert(self, prefix, next_hop):
 
@@ -133,6 +124,16 @@ class Binary2Tree(BinaryTree):
         # set the next-hop of the final node
         cur_node.next_hop = next_hop
 
+    @staticmethod
+    def __remove_node(parent_node, node, default_next_hop):
+        if parent_node is not None:
+            if parent_node.left == node:
+                # node is the left node of the parent
+                parent_node.left.next_hop = default_next_hop
+            elif parent_node.right == node:
+                # node is the right node of the parent
+                parent_node.right.next_hop = default_next_hop
+
     def delete(self, prefix):
 
         # look for the prefix in the tree
@@ -162,7 +163,7 @@ class Binary2Tree(BinaryTree):
             # the prefix was found
             # remove node from the tree
             parent_node = visited_nodes[0]
-            _remove_node(parent_node, cur_node, self.default_next_hop)
+            Binary2Tree.__remove_node(parent_node, cur_node, self.default_next_hop)
 
             # remove all the unnecessary nodes
             for node in visited_nodes:
@@ -183,7 +184,7 @@ class Binary2Tree(BinaryTree):
 
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
-        binary_address = _to_binary(ip_address, format)
+        binary_address = to_binary(ip_address, format)
 
         # start with no next-hop
         next_hop = None
