@@ -3,19 +3,6 @@ from proj1.prefix import Prefix
 import proj1.ip_address as ip
 
 
-def _to_binary(ip_address, format):
-    if format is ip.Format.quad_doted:
-        binary_address = ip.quad_doted_to_binary(ip_address)
-    elif format is ip.Format.decimal:
-        binary_address = ip.decimal_to_binary(ip_address)
-    elif format is ip.Format.binary:
-        binary_address = ip_address
-    else:
-        raise Exception("invalid ip address format")
-
-    return binary_address
-
-
 def _inherited(node, parents):
     if node.next_hop:
         return node.next_hop
