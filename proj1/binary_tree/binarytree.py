@@ -116,6 +116,11 @@ class BinaryTree:
                 # ensure that when a node is a leaf it's next-hop is a set and not an int
                 cur_node.next_hop = {cur_node.next_hop}
 
+        # 3rd step - perform the operation# from the lowest level to highest
+        for node in reversed(visited_nodes):
+            if node.left and node.right:
+                BinaryTree.__operation_node(node)
+
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
         binary_address = to_binary(ip_address, format)
@@ -252,8 +257,18 @@ class BinaryTree:
             BinaryTree.__compress_first_step(node.right, node, next_hop)
 
     @staticmethod
-    def __operation(next_hops1: set, next_hops2: set):
-        intersection = next_hops1.intersection(next_hops2)
+    def __operation(next_hops1, next_hops2):
+        try:
+            intersection = next_hops1.intersection(next_hops2)
+        except AttributeError:
+            # the first next hops is not a set but an int
+            next_hops1 = {next_hops1}
+            intersection = next_hops1.intersection(next_hops2)
+        except TypeError:
+            # the second next hops is not a set but an int
+            next_hops2 = {next_hops2}
+            intersection = next_hops1.intersection(next_hops2)
+
         if len(intersection) == 0:
             new_set = next_hops1.union(next_hops2)
         else:
@@ -264,6 +279,8 @@ class BinaryTree:
     def __operation_node(node):
         if node is None:
             return {}
+        elif node.next_hop:
+            return node.next_hop
         else:
             return BinaryTree.__operation(BinaryTree.__operation_node(node.left),
                                           BinaryTree.__operation_node(node.right))
