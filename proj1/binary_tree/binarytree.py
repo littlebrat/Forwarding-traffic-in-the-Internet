@@ -329,19 +329,7 @@ class BinaryTree:
             # check if the inherent next-hop is in the next-hop set of the node
             if next_hop in node.next_hop:
                 # the node doesn't need it's own next-hop
-
-                if len(node.next_hop) == 1:
-                    # this node is not necessary anymore: remove the node
-                    if left:
-                        parent.clear_left()
-                    else:
-                        parent.clear_right()
-                    node.clear_left()
-                    node.clear_right()
-
-                else:
-                    # this node is necessary and is a blank node
-                    node.clear_next_hop()
+                node.clear_next_hop()
             else:
                 # choose one of the possible next-hops of the node
                 node.next_hop = node.next_hop.pop()
@@ -351,3 +339,10 @@ class BinaryTree:
             BinaryTree.__choose_next_hop(node.left, node, next_hop, True)
             # move to the right node
             BinaryTree.__choose_next_hop(node.right, node, next_hop, False)
+
+            if not node.left and not node.right and not node.next_hop:
+                # this node is not necessary anymore: remove the node
+                if left:
+                    parent.clear_left()
+                else:
+                    parent.clear_right()
