@@ -42,7 +42,7 @@ class BinaryTree:
 
     def insert_compress(self, prefix, next_hop):
         # queue with all the visited nodes
-        visited_nodes = deque()
+        visited_nodes = list()
 
         # 1st step - move in the tree until finding the prefix position and expand the visited nodes
         cur_node = self.root
@@ -60,26 +60,26 @@ class BinaryTree:
                 if cur_node.left.next_hop:
                     cur_node.left.next_hop = {cur_node.left.next_hop}
 
+                # store the non-visited node to be used in the 3rd and 4th steps
+                visited_nodes.append(cur_node.left)
+
                 # move to the right node and create one if necessary
                 if not cur_node.right:
                     cur_node.right = Node()
                 cur_node = cur_node.right
-
-                # store the non-visited node to be used in the 3rd and 4th steps
-                visited_nodes.append(cur_node.left)
 
             else:
                 # ensure the right node has as next-hop a set and not an int
                 if cur_node.right.next_hop:
                     cur_node.right.next_hop = {cur_node.right.next_hop}
 
+                # store the non-visited node to be used in the 3rd and 4th steps
+                visited_nodes.append(cur_node.right)
+
                 # move to the left node and create one if necessary
                 if not cur_node.left:
                     cur_node.left = Node()
                 cur_node = cur_node.left
-
-                # store the non-visited node to be used in the 3rd and 4th steps
-                visited_nodes.append(cur_node.left)
 
         # after leaving the loop cur_node points to the node where the prefix is stored
         visited_nodes.append(cur_node)
@@ -101,26 +101,34 @@ class BinaryTree:
 
             # expand the node
             if cur_node.left and not cur_node.right:
-                cur_node.right = Node({cur_next_hop})
+                cur_node.right = Node(cur_next_hop)
                 cur_node.clear_next_hop()
 
-                # add the non created node
-                node_queue.appendleft(cur_node.left)
             elif not cur_node.left and cur_node.right:
-                cur_node.left = Node({cur_next_hop})
+                cur_node.left = Node(cur_next_hop)
                 cur_node.clear_next_hop()
 
-                # add the non created node
-                node_queue.appendleft(cur_node.right)
             elif not cur_node.left and not cur_node.right:
                 # ensure that when a node is a leaf it's next-hop is a set and not an int
                 cur_node.next_hop = {cur_node.next_hop}
 
+            if cur_node.left:
+                node_queue.appendleft(cur_node.left)
+            if cur_node.right:
+                node_queue.appendleft(cur_node.right)
+
         # 3rd step - perform the operation# from the lowest level to highest
         for node in reversed(visited_nodes):
-            if node.left and node.right:
-                BinaryTree.__operation_node(node)
+            node.next_hop = BinaryTree.__operation_node(node)
 
+        # 4th step - choose the next-hops of the nodes from top to bottom
+        # set the next-hop of the root as one of next-hops in it's set
+        self.root.next_hop = self.root.next_hop.pop()
+        # choose the next-hop of the left node
+        BinaryTree.__choose_next_hop(self.root.left, self.root, self.root.next_hop, True)
+        # choose the next-hop of the right node
+        BinaryTree.__choose_next_hop(self.root.right, self.root, self.root.next_hop, False)
+            
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
         binary_address = to_binary(ip_address, format)
