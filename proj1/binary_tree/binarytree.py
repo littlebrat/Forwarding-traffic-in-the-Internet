@@ -237,6 +237,26 @@ class BinaryTree:
             # print left node
             BinaryTree.__print_node(node.left, level + 1)
 
+    def normalize(self):
+        BinaryTree.__normalize(self.root)
+
+    @staticmethod
+    def __normalize(node: Node, next_hop=None):
+        if node:
+            cur_next_hop = node.next_hop if node.next_hop else next_hop
+
+            if node.left and not node.right:
+                node.right = Node(next_hop)
+                node.clear_next_hop()
+            elif not node.left and node.right:
+                node.left = Node(next_hop)
+                node.clear_next_hop()
+            elif node.left and node.right:
+                node.clear_next_hop()
+
+            BinaryTree.__normalize(node.left, cur_next_hop)
+            BinaryTree.__normalize(node.right, cur_next_hop)
+
     @staticmethod
     def __compress_first_step(node: Node, parent: Node, next_hop: int):
         if node is None:
