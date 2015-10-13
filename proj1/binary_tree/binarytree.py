@@ -84,6 +84,37 @@ class BinaryTree:
         # after leaving the loop cur_node points to the node where the prefix is stored
         visited_nodes.append(cur_node)
 
+        # 2nd step - expand the descendants
+        # queue used to move in the tree level by level
+        node_queue = deque()
+
+        # initialize queue with the first node
+        cur_node.next_hop = cur_next_hop = next_hop
+        node_queue.appendleft(cur_node)
+
+        while len(node_queue) > 0:
+            cur_node = node_queue.pop()
+            visited_nodes.append(cur_node)
+
+            if cur_node.next_hop:
+                cur_next_hop = cur_node.next_hop
+
+            # expand the node
+            if cur_node.left and not cur_node.right:
+                cur_node.right = Node({cur_next_hop})
+                cur_node.clear_next_hop()
+
+                # add the non created node
+                node_queue.appendleft(cur_node.left)
+            elif not cur_node.left and cur_node.right:
+                cur_node.left = Node({cur_next_hop})
+                cur_node.clear_next_hop()
+
+                # add the non created node
+                node_queue.appendleft(cur_node.right)
+            elif not cur_node.left and not cur_node.right:
+                # ensure that when a node is a leaf it's next-hop is a set and not an int
+                cur_node.next_hop = {cur_node.next_hop}
 
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
