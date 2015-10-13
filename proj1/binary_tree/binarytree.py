@@ -252,8 +252,18 @@ class BinaryTree:
             BinaryTree.__compress_first_step(node.right, node, next_hop)
 
     @staticmethod
-    def __operation(next_hops1: set, next_hops2: set):
-        intersection = next_hops1.intersection(next_hops2)
+    def __operation(next_hops1, next_hops2):
+        try:
+            intersection = next_hops1.intersection(next_hops2)
+        except AttributeError:
+            # the first next hops is not a set but an int
+            next_hops1 = {next_hops1}
+            intersection = next_hops1.intersection(next_hops2)
+        except TypeError:
+            # the second next hops is not a set but an int
+            next_hops2 = {next_hops2}
+            intersection = next_hops1.intersection(next_hops2)
+
         if len(intersection) == 0:
             new_set = next_hops1.union(next_hops2)
         else:
