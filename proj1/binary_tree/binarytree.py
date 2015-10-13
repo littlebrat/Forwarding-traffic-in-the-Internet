@@ -184,6 +184,14 @@ class BinaryTree:
         return new_set
 
     @staticmethod
+    def __operation_node(node):
+        if node is None:
+            return {}
+        else:
+            return BinaryTree.__operation(BinaryTree.__operation_node(node.left),
+                                          BinaryTree.__operation_node(node.right))
+
+    @staticmethod
     def __get_next_hops(node: Node):
         """
         :rtype : set
