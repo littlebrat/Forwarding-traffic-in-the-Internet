@@ -50,7 +50,7 @@ def __print_node(node, level):
     if node:
 
         # print right node
-        __print_node(node.right(), level + 1)
+        __print_node(node.right, level + 1)
 
         # print the same number of tabs as the level of the node
         for i in range(0, 2*level):
@@ -60,7 +60,7 @@ def __print_node(node, level):
         print(node)
 
         # print left node
-        __print_node(node.left(), level + 1)
+        __print_node(node.left, level + 1)
 
 
 def print_tree(tree):

@@ -14,3 +14,11 @@ btree.insert_compress(Prefix('110'), 3)
 btree.print()
 print()
 
+tree = BinaryTree(1)
+tree.insert_compress(Prefix('00'), 2)
+tree.insert_compress(Prefix('10'), 2)
+tree.insert_compress(Prefix('11'), 3)
+
+print("COMPRESSED")
+tree.print()
+
