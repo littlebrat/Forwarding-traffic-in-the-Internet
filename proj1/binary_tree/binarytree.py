@@ -121,6 +121,14 @@ class BinaryTree:
         for node in reversed(visited_nodes):
             node.next_hop = BinaryTree.__operation_node(node)
 
+        # 4th step - choose the next-hops of the nodes from top to bottom
+        # set the next-hop of the root as one of next-hops in it's set
+        self.root.next_hop = self.root.next_hop.pop()
+        # choose the next-hop of the left node
+        BinaryTree.__choose_next_hop(self.root.left, self.root, self.root.next_hop, True)
+        # choose the next-hop of the right node
+        BinaryTree.__choose_next_hop(self.root.right, self.root, self.root.next_hop, False)
+            
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
         binary_address = to_binary(ip_address, format)
