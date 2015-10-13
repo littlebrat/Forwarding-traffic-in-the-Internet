@@ -1,3 +1,4 @@
+from collections import deque
 from proj1.node import Node
 from proj1.prefix import Prefix
 from proj1.ip_address import to_binary
@@ -38,6 +39,51 @@ class BinaryTree:
                 cur_node = cur_node.left
         # set the next-hop of the final node
         cur_node.next_hop = next_hop
+
+    def insert_compress(self, prefix, next_hop):
+        # queue with all the visited nodes
+        visited_nodes = deque()
+
+        # 1st step - move in the tree until finding the prefix position and expand the visited nodes
+        cur_node = self.root
+        cur_next_hop = cur_node.next_hop
+        for bit in prefix:
+            # update the next hop if the current node has a next hop
+            if cur_node.next_hop:
+                cur_next_hop = cur_node.next_hop
+
+            BinaryTree.__expand_node(cur_node, cur_next_hop)
+            visited_nodes.append(cur_node)
+
+            if bit:
+                # ensure the left node has as next-hop a set and not an int
+                if cur_node.left.next_hop:
+                    cur_node.left.next_hop = {cur_node.left.next_hop}
+
+                # move to the right node and create one if necessary
+                if not cur_node.right:
+                    cur_node.right = Node()
+                cur_node = cur_node.right
+
+                # store the non-visited node to be used in the 3rd and 4th steps
+                visited_nodes.append(cur_node.left)
+
+            else:
+                # ensure the right node has as next-hop a set and not an int
+                if cur_node.right.next_hop:
+                    cur_node.right.next_hop = {cur_node.right.next_hop}
+
+                # move to the left node and create one if necessary
+                if not cur_node.left:
+                    cur_node.left = Node()
+                cur_node = cur_node.left
+
+                # store the non-visited node to be used in the 3rd and 4th steps
+                visited_nodes.append(cur_node.left)
+
+        # after leaving the loop cur_node points to the node where the prefix is stored
+        visited_nodes.append(cur_node)
+
 
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
@@ -182,6 +228,23 @@ class BinaryTree:
         else:
             new_set = intersection
         return new_set
+
+    @staticmethod
+    def __operation_node(node):
+        if node is None:
+            return {}
+        else:
+            return BinaryTree.__operation(BinaryTree.__operation_node(node.left),
+                                          BinaryTree.__operation_node(node.right))
+
+    @staticmethod
+    def __expand_node(node, next_hop):
+        if node.left and not node.right:
+            node.right = Node(next_hop)
+            node.clear_next_hop()
+        elif not node.left and node.right:
+            node.left = Node(next_hop)
+            node.clear_next_hop()
 
     @staticmethod
     def __get_next_hops(node: Node):
