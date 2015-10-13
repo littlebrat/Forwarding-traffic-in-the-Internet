@@ -203,7 +203,7 @@ class BinaryTree:
         BinaryTree.__choose_next_hop(self.root.right, self.root, self.root.next_hop, False)
 
     def normalize(self):
-        BinaryTree.__normalize(self.root)
+        BinaryTree.__normalize(self.root, None, True)
 
     def print(self):
         BinaryTree.__print_node(self.root, 0)
@@ -241,21 +241,39 @@ class BinaryTree:
             BinaryTree.__print_node(node.left, level + 1)
 
     @staticmethod
-    def __normalize(node: Node, next_hop=None):
+    def __normalize(node: Node, next_hop=None, ortc=False):
         if node:
             cur_next_hop = node.next_hop if node.next_hop else next_hop
 
-            if node.left and not node.right:
-                node.right = Node(cur_next_hop)
-                node.clear_next_hop()
-            elif not node.left and node.right:
-                node.left = Node(cur_next_hop)
-                node.clear_next_hop()
-            elif node.left and node.right:
-                node.clear_next_hop()
+            if node.next_hop and not node.left and not node.right:
+                # this node is a leaf
+                node.next_hop = {node.next_hop}
+                return
 
-            BinaryTree.__normalize(node.left, cur_next_hop)
-            BinaryTree.__normalize(node.right, cur_next_hop)
+            if node.left and not node.right:
+                if ortc:
+                    node.right = Node({cur_next_hop})
+                else:
+                    node.right = Node(cur_next_hop)
+
+                node.clear_next_hop()
+                BinaryTree.__normalize(node.left, cur_next_hop, ortc)
+
+            elif not node.left and node.right:
+                if ortc:
+                    node.left = Node({cur_next_hop})
+                else:
+                    node.left = Node(cur_next_hop)
+
+                node.clear_next_hop()
+                BinaryTree.__normalize(node.right, cur_next_hop, ortc)
+
+            else:
+                if node.left and node.right:
+                    node.clear_next_hop()
+
+                BinaryTree.__normalize(node.left, cur_next_hop, ortc)
+                BinaryTree.__normalize(node.right, cur_next_hop, ortc)
 
     @staticmethod
     def __compress_first_step(node: Node, parent: Node, next_hop: int):
