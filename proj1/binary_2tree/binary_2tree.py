@@ -8,8 +8,8 @@ from proj1.prefix import Prefix
 class Binary2Tree:
 
     def __init__(self, default_next_hop):
-        super().__init__(default_next_hop)
-
+        # start with only one node with the default next-hop
+        self.root = Node(default_next_hop)
         # must store the default next-hop to use in the delete function
         self.default_next_hop = default_next_hop
 
