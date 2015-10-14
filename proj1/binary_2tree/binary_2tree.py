@@ -163,7 +163,7 @@ class Binary2Tree:
         BinaryTree.__print_node(self.root, 0)
 
     def print_table(self):
-        BinaryTree.__print_table_node(self.root, '')
+        Binary2Tree.__print_table_node(self.root, '')
 
     @staticmethod
     def __from_binary_tree(binary_cur_node, binary2_cur_node, next_hop, left):
@@ -232,10 +232,10 @@ class Binary2Tree:
                 print(bits, node.next_hop)
 
             # print left node
-            BinaryTree.__print_table_node(node.left, bits + '0')
+            Binary2Tree.__print_table_node(node.left, bits + '0')
 
             # print right node
-            BinaryTree.__print_table_node(node.right, bits + '1')
+            Binary2Tree.__print_table_node(node.right, bits + '1')
 
     @staticmethod
     def __print_node(node, level):
