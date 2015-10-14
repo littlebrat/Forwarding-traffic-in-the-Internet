@@ -1,43 +1,68 @@
 import sys
 from proj1.binary_tree.binarytree import BinaryTree
 from proj1.binary_2tree.binary_2tree import Binary2Tree
+from proj1.prefix import Prefix
 
 
-def main():
+def main(path = None):
     print('Forwarding data-packets in a router, using binary trees and 2-trees for representing forwarding tables.')
 
-    with_arg_user_cmds = {
-        'ReadTable': 'from_file', 'AddPrefix': 'insert', 'DeletePrefix': 'delete',
-        'AddressLookUp': 'lookup'
-    }
-    no_arg_user_cmds = {
-        'PrintTable': 'print_table', 'TwoTree': 'from_binary_tree', 'exit': 'sys.exit'
-    }
-
-    file_name = ''
+    file_name = path
     bin_tree = BinaryTree()
-    #bin_2tree = Binary2Tree()
+    bin_2tree = Binary2Tree(1)
 
-    x = None
-    while True:
-        try:
+    if path is not None:
+        bin_tree = BinaryTree()
+        bin_tree.from_file(path)
+    else:    
+
+        while True:
             x = input()
-            if len(x.split(' ')) is 1:
-                arg1 = x
-                if arg1 in no_arg_user_cmds.keys():
-                    print('No args!')
+            args = x.split(' ')
+            if args[0] == 'exit' and len(args) == 1:
+                sys.exit()
+            elif args[0] == 'PrintTable' and len(args) == 2:
+                if args[1] == '1':
+                    bin_tree.print_table()
+                elif args[1] == '2':
+                    bin_2tree.print_table()
                 else:
-                    raise Exception
-            elif len(x.split(' ')) is 2:
-                arg1, arg2 = x.split(' ')
-                if arg1 in with_arg_user_cmds.keys():
-                    print('With args!')
+                    print('wrong command format')
+            elif args[0] == 'TwoTree' and len(args) == 1:
+                bin_2tree.from_binary_tree(bin_tree)
+            elif args[0] == 'AddPrefix' and len(args) == 4:
+                if args[1] == '1':
+                    bin_tree.insert(Prefix(args[2]),args[3])
+                elif args[1] == '2':
+                    bin_2tree.insert(Prefix(args[2]),args[3])
                 else:
-                    raise Exception
+                    print('wrong command format')
+            elif args[0] == 'AddressLookUp' and len(args) == 3:
+                if args[1] == '1':
+                    bin_tree.lookup(args[2])
+                elif args[1] == '2':
+                    bin_2tree.lookup(args[2])
+                else:
+                    print('wrong command format')
+            elif args[0] == 'DeletePrefix' and len(args) == 3:
+                if args[1] == '1':
+                    bin_tree.delete(Prefix(args[2]))
+                elif args[1] == '2':
+                    bin_2tree.delete(Prefix(args[2]))
+                else:
+                    print('wrong command format')
+            elif args[0] == 'ReadTable' and len(args) == 3:
+                file_name = args[2]
+                if args[1] == '1':
+                    bin_tree = BinaryTree()
+                    bin_tree.from_file(file_name)
+                elif args[1] == '2':
+                    bin_2tree = Binary2Tree(1)
+                    bin_2tree.from_file(file_name)
+                else:
+                    print('wrong command format')
             else:
-                raise Exception
-        except Exception:
-            print('UNKNOWN INPUT FORMAT DETECTED')
+                print('wrong command format')
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
