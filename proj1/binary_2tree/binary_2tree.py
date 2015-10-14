@@ -160,7 +160,7 @@ class Binary2Tree:
         return next_hop
 
     def print(self):
-        BinaryTree.__print_node(self.root, 0)
+        Binary2Tree.__print_node(self.root, 0)
 
     def print_table(self):
         Binary2Tree.__print_table_node(self.root, '')
@@ -242,7 +242,7 @@ class Binary2Tree:
         if node:
 
             # print right node
-            BinaryTree.__print_node(node.right, level + 1)
+            Binary2Tree.__print_node(node.right, level + 1)
 
             # print the same number of tabs as the level of the node
             for i in range(0, 2*level):
@@ -252,4 +252,4 @@ class Binary2Tree:
             print(node)
 
             # print left node
-            BinaryTree.__print_node(node.left, level + 1)
+            Binary2Tree.__print_node(node.left, level + 1)
