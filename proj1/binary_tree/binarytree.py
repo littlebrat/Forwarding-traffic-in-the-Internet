@@ -189,7 +189,7 @@ class BinaryTree:
 
     def compress(self):
         # first step
-        BinaryTree.__compress_first_step(self.root, None, self.root.next_hop)
+        BinaryTree.__normalize(self.root, None, True)
 
         # second step
         BinaryTree.__get_next_hops(self.root)
@@ -201,6 +201,9 @@ class BinaryTree:
         BinaryTree.__choose_next_hop(self.root.left, self.root, self.root.next_hop, True)
         # choose the next-hop of the right node
         BinaryTree.__choose_next_hop(self.root.right, self.root, self.root.next_hop, False)
+
+    def normalize(self):
+        BinaryTree.__normalize(self.root)
 
     def print(self):
         BinaryTree.__print_node(self.root, 0)
@@ -238,31 +241,39 @@ class BinaryTree:
             BinaryTree.__print_node(node.left, level + 1)
 
     @staticmethod
-    def __compress_first_step(node: Node, parent: Node, next_hop: int):
-        if node is None:
-            # reached a leaf in the tree
-            # store in the leaf a set of next-hop for this prefix
-            # this accesses the private variable intentionally
-            parent.next_hop = {next_hop}
-        else:
-            # if node has only one child: create the missing child
+    def __normalize(node: Node, next_hop=None, ortc=False):
+        if node:
+            cur_next_hop = node.next_hop if node.next_hop else next_hop
+
+            if node.next_hop and not node.left and not node.right:
+                # this node is a leaf
+                node.next_hop = {node.next_hop}
+                return
+
             if node.left and not node.right:
-                # this node has only a left child: create the right child
-                node.right = Node(next_hop)
-            elif node.right and not node.left:
-                # this node has only a right child: create the left child
-                node.left = Node(next_hop)
+                if ortc:
+                    node.right = Node({cur_next_hop})
+                else:
+                    node.right = Node(cur_next_hop)
 
-            if node.next_hop:
-                # store the current next-hop for nodes under this node
-                next_hop = node.next_hop
-                # unset this node next-hop
                 node.clear_next_hop()
+                BinaryTree.__normalize(node.left, cur_next_hop, ortc)
 
-            # go to the left node
-            BinaryTree.__compress_first_step(node.left, node, next_hop)
-            # go to the right node
-            BinaryTree.__compress_first_step(node.right, node, next_hop)
+            elif not node.left and node.right:
+                if ortc:
+                    node.left = Node({cur_next_hop})
+                else:
+                    node.left = Node(cur_next_hop)
+
+                node.clear_next_hop()
+                BinaryTree.__normalize(node.right, cur_next_hop, ortc)
+
+            else:
+                if node.left and node.right:
+                    node.clear_next_hop()
+
+                BinaryTree.__normalize(node.left, cur_next_hop, ortc)
+                BinaryTree.__normalize(node.right, cur_next_hop, ortc)
 
     @staticmethod
     def __operation(next_hops1, next_hops2):
