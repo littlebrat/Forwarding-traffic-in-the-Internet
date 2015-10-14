@@ -22,20 +22,20 @@ class Binary2Tree:
                 else:
                     self.insert(Prefix(words[0]), words[1])
 
-    def from_binary_tree(self, binary_tree):
+    @staticmethod
+    def from_binary_tree(binary_tree):
         """
         :type binary_tree: BinaryTree
         """
-
+        b2tree = Binary2Tree(binary_tree.root.next_hop)
         # the default next-hop of the binary tree is the next-hop of the root node
-        self.default_next_hop = binary_tree.root.next_hop
-        self.root = binary_tree.root.copy()
-        self.root.clear_next_hop()
+        b2tree.root = binary_tree.root.copy()
+        b2tree.root.clear_next_hop()
 
         # handle the left side of the tree
-        Binary2Tree.__from_binary_tree(binary_tree.root.left, self.root, self.default_next_hop, True)
+        Binary2Tree.__from_binary_tree(binary_tree.root.left, b2tree.root, b2tree.default_next_hop, True)
         # handle the right side of the tree
-        Binary2Tree.__from_binary_tree(binary_tree.root.right, self.root, self.default_next_hop, False)
+        Binary2Tree.__from_binary_tree(binary_tree.root.right, b2tree.root, b2tree.default_next_hop, False)
         
     def insert(self, prefix, next_hop):
 
