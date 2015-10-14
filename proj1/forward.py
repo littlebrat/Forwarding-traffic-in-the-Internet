@@ -51,7 +51,7 @@ def main(path = None):
                 print('wrong command format')
                 print('Type -h or help for instructions on program routines.')
         elif args[0] == 'TwoTree' and len(args) == 1:
-            bin_2tree.from_binary_tree(bin_tree)
+            bin_2tree = Binary2Tree.from_binary_tree(bin_tree)
         elif args[0] == 'AddPrefix' and len(args) == 4:
             if args[1] == '1':
                 bin_tree.insert(Prefix(args[2]), args[3])
