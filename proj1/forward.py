@@ -6,7 +6,7 @@ from proj1.prefix import Prefix
 
 
 def helpmsg():
-    print('\n AddPrefix (-b | -q) [x] [p] [n] \t  usage: adds the prefix [p] to the corresponding tree [x] with the chosen next hop value [n].')
+    print('\n AddPrefix (-b) [x] [p] [n] \t  usage: adds the prefix [p] to the corresponding tree [x] with the chosen next hop value [n].')
     print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\t [p]: choose the binary prefix added to the tree [x].')
     print('\t [n]: choose the next hop value for this prefix [p]')
@@ -65,7 +65,13 @@ def main(path=None):
 
                 elif args[0] == 'AddPrefix':
                     try:
-                        bin_tree.insert(Prefix(args[2], args[1]), args[3])
+                        if args[1] == '*':
+                            bin_tree.insert(Prefix('', '-b'), args[2])
+                        elif args[1] == '-b':
+                            bin_tree.insert(Prefix(args[2], '-b'), args[3])
+                        else:
+                            bin_tree.insert(Prefix(args[1], '-q'), args[2])
+
                     except Exception:
                         print("Prefix format is not correct. Two formats are supported:")
                         print("\t-q Quad-doted, ex: 1.2.3.0/24")
@@ -76,7 +82,13 @@ def main(path=None):
 
                 elif args[0] == 'DeletePrefix':
                     try:
-                        bin_tree.delete(Prefix(args[2], args[1]), args[3])
+                        if args[1] == '*':
+                            bin_tree.delete(Prefix('', '-b'))
+                        elif args[1] == '-b':
+                            bin_tree.delete(Prefix(args[2], '-b'))
+                        else:
+                            bin_tree.delete(Prefix(args[1], '-q'))
+
                     except Exception:
                         print("Prefix format is not correct. Two formats are supported:")
                         print("\t-q Quad-doted, ex: 1.2.3.0/24")
