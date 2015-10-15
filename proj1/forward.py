@@ -31,8 +31,8 @@ def main(path = None):
     bin_tree = BinaryTree()
     bin_2tree = Binary2Tree(1)
 
-    if path != None:
-        bin_tree.from_file(path)
+    if len(path) >= 2:
+        bin_tree.from_file(path[1])
 
     while True:
         x = input()
@@ -49,41 +49,22 @@ def main(path = None):
                 print('Type -h or help for instructions on program routines.')
         elif args[0] == 'TwoTree' and len(args) == 1:
             bin_2tree = Binary2Tree.from_binary_tree(bin_tree)
-        elif args[0] == 'AddPrefix' and len(args) == 4:
-            if args[1] == '1':
-                bin_tree.insert(Prefix(args[2]), args[3])
-            elif args[1] == '2':
-                bin_2tree.insert(Prefix(args[2]), args[3])
-            else:
-                print('wrong command format')
-                print('Type -h or help for instructions on program routines.')
+        elif args[0] == 'AddPrefix' and len(args) == 3:
+            bin_tree.insert(Prefix(args[1]), args[2])
         elif args[0] == 'AddressLookUp' and len(args) == 3:
             if args[1] == '1':
-                bin_tree.lookup(args[2])
+                print(bin_tree.lookup(args[2]))
             elif args[1] == '2':
-                bin_2tree.lookup(args[2])
+                print(bin_2tree.lookup(args[2]))
             else:
                 print('wrong command format')
                 print('Type -h or help for instructions on program routines.')
-        elif args[0] == 'DeletePrefix' and len(args) == 3:
-            if args[1] == '1':
-                bin_tree.delete(Prefix(args[2]))
-            elif args[1] == '2':
-                bin_2tree.delete(Prefix(args[2]))
-            else:
-                print('wrong command format')
-                print('Type -h or help for instructions on program routines.')
-        elif args[0] == 'ReadTable' and len(args) == 3:
-            file_name = args[2]
-            if args[1] == '1':
-                bin_tree = BinaryTree()
-                bin_tree.from_file(file_name)
-            elif args[1] == '2':
-                bin_2tree = Binary2Tree(1)
-                bin_2tree.from_file(file_name)
-            else:
-                print('wrong command format')
-                print('Type -h or help for instructions on program routines.')
+        elif args[0] == 'DeletePrefix' and len(args) == 2:
+            bin_tree.delete(Prefix(args[1]))
+        elif args[0] == 'ReadTable' and len(args) == 2:
+            file_name = args[1]
+            bin_tree = BinaryTree()
+            bin_tree.from_file(file_name)
         elif args[0] == 'Print' and len(args) == 2:
             if args[1] == '1':
                 bin_tree.print()
@@ -96,4 +77,4 @@ def main(path = None):
             print('Type -h or help for instructions on program routines.')
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv)
