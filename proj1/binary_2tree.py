@@ -7,12 +7,7 @@ import proj1.ip_address as ip
 class Binary2Tree:
 
     def __init__(self, binary_tree: BinaryTree):
-        self.root = binary_tree.root.copy()
-
-        # handle the left side of the tree
-        Binary2Tree.__from_binary_tree(binary_tree.root.left, self.root, self.root.next_hop, True)
-        # handle the right side of the tree
-        Binary2Tree.__from_binary_tree(binary_tree.root.right, self.root, self.root.next_hop, False)
+        self.root = Binary2Tree.__from_binary_tree(binary_tree.root)
         
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
@@ -48,49 +43,57 @@ class Binary2Tree:
         Binary2Tree.__print_table_node(self.root, '')
 
     @staticmethod
-    def __from_binary_tree(binary_cur_node: Node, binary2_cur_node: Node, next_hop, left):
+    def __from_binary_tree(bnode: Node, b2node: Node=None, inherited_nexthop=None, left=None):
 
-        if binary_cur_node is None:
-            # reached a leaf in the tree
-            # set the binary 2-tree current node next-hop
-            binary2_cur_node.next_hop = next_hop
+        if not bnode:
+            # reached a leaf in the binary 2-tree
+            b2node.next_hop = inherited_nexthop
+            return b2node
+
+        # store the inherited next-hop
+        if bnode.next_hop is not None:
+            inherited_nexthop = bnode.next_hop
+
+        # create the new node blank to insert in the binary 2-tree
+        new_node = bnode.copy()
+        new_node.clear_next_hop()
+
+        if not b2node:
+            # this is the root of the binary 2-tree
+            b2node = new_node
+        else:
+            # add the new node to the binary 2-tree and move to the new node
+            if left:
+                b2node.left = new_node
+                b2node = b2node.left
+            else:
+                b2node.right = new_node
+                b2node = b2node.right
+
+        # move to the next child and create any missing child in the binary 2 tree
+        if bnode.left and not bnode.right:
+            # the binary node has only the left child
+            # create the right child in the binary 2-tree
+            b2node.right = Node(inherited_nexthop)
+
+            # move to the left child in the binary tree
+            Binary2Tree.__from_binary_tree(bnode.left, b2node, inherited_nexthop, True)
+
+        elif not bnode.left and bnode.right:
+            # the binary node has only the right child
+            # create the left child in the binary 2-tree
+            b2node.left = Node(inherited_nexthop)
+
+            # move to the right child in the binary tree
+            Binary2Tree.__from_binary_tree(bnode.right, b2node, inherited_nexthop, False)
 
         else:
-            # move binary2 current node to the new node
-            new_node = binary_cur_node.copy()
-            # set the new node as blank in the binary 2-tree
-            new_node.clear_next_hop()
+            # the binary tree node has both children
+            # move to both children
+            Binary2Tree.__from_binary_tree(bnode.left, b2node, inherited_nexthop, True)
+            Binary2Tree.__from_binary_tree(bnode.right, b2node, inherited_nexthop, False)
 
-            if binary2_cur_node:
-
-                if left:
-                    # new node is the left child of the binary2_cur_node
-                    binary2_cur_node.left = new_node
-                else:
-                    # new node is the right child of the binary2_cur_node
-                    binary2_cur_node.right = new_node
-
-                # store a new next-hop if the current node in the binary tree is not blank
-                if binary_cur_node.next_hop:
-                    next_hop = binary_cur_node.next_hop
-
-            # create new nodes if the current node of the normal binary tree has exactly one child
-            if binary_cur_node.left and not binary_cur_node.right:
-                # create right node
-                new_node.right = Node(next_hop)
-                # move to left node
-                Binary2Tree.__from_binary_tree(binary_cur_node.left, new_node, next_hop, True)
-
-            elif binary_cur_node.right and not binary_cur_node.left:
-                # create left node
-                new_node.left = Node(next_hop)
-                # move to right node
-                Binary2Tree.__from_binary_tree(binary_cur_node.right, new_node, next_hop, False)
-            else:
-                # move to left node
-                Binary2Tree.__from_binary_tree(binary_cur_node.left, new_node, next_hop, True)
-                # move to right node
-                Binary2Tree.__from_binary_tree(binary_cur_node.right, new_node, next_hop, False)
+        return b2node
 
     @staticmethod
     def __print_table_node(node, bits):
