@@ -6,25 +6,14 @@ from proj1.prefix import Prefix
 
 
 def helpmsg():
-    print('\n AddPrefix (-b) [x] [p] [n] \t  usage: adds the prefix [p] to the corresponding tree [x] with the chosen next hop value [n].')
-    print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
-    print('\t [p]: choose the binary prefix added to the tree [x].')
-    print('\t [n]: choose the next hop value for this prefix [p]')
-    print('\n DeletePrefix (-b | -q) [x] [p] \t usage: delete the prefix [p] from the tree [x]')
-    print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
-    print('\t [p]: choose the binary prefix added to the tree [x].')
-    print('\n PrintTable [x] \t usage: prints the table from the corresponding tree.')
-    print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
-    print('\n AddressLookUp [x] [ip] \t usage: look up the corresponding next hop value on the tree [x] assigned to the address [ip]')
-    print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
-    print('\t [ip]: choose the wanted ip to track the next hop')
-    print('\n ReadTable [x] [path] \t usage: read the the table file [path] and build the corresponding tree [x]')
-    print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
-    print('\t [path]: the relative path to this file execution.')
-    print('\n Print [x] \t usage: prints graphically the tree [x] to the terminal output.')
-    print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
-    print('\n TwoTree \t usage: convert the binary tree to a 2-tree.')
-    print('\n exit \t usage: quit the application.')
+    print()
+    print('AddPrefix (-b) [p] [n]   adds the prefix [p] to the current table with the next-hop value [n]')
+    print('PrintTable               prints current table')
+    print('AddressLookUp [ip]       looks up the next-hop for the given ip address [ip]')
+    print('ReadTable [path]         builds the binary tree from the given file')
+    print('PrintTree                prints the table in a tree format')
+    print('TwoTree                  converts the binary tree to a binary 2-tree')
+    print('exit                     quits the application')
 
 
 def main(path=None):
@@ -74,8 +63,8 @@ def main(path=None):
 
                     except Exception:
                         print("Prefix format is not correct. Two formats are supported:")
-                        print("\t-q Quad-doted, ex: 1.2.3.0/24")
-                        print("\t-b Binary, ex:101010101010")
+                        print("\tQuad-doted, ex: 1.2.3.0/24")
+                        print("\tBinary, ex:101010101010")
 
                 elif args[0] == 'AddressLookUp':
                     print(bin_tree.lookup(args[1]))
@@ -91,12 +80,12 @@ def main(path=None):
 
                     except Exception:
                         print("Prefix format is not correct. Two formats are supported:")
-                        print("\t-q Quad-doted, ex: 1.2.3.0/24")
-                        print("\t-b Binary, ex:101010101010")
+                        print("\tQuad-doted, ex: 1.2.3.0/24")
+                        print("\tBinary, ex:101010101010")
 
                     bin_tree.delete(Prefix(args[1]))
 
-                elif args[0] == 'Print':
+                elif args[0] == 'PrintTree':
                     bin_tree.print()
 
                 elif args[0] == 'help' or args[0] == '-h':
