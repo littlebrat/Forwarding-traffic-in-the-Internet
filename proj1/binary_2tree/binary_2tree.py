@@ -37,101 +37,6 @@ class Binary2Tree:
         # handle the right side of the tree
         Binary2Tree.__from_binary_tree(binary_tree.root.right, b2tree.root, b2tree.default_next_hop, False)
         
-    def insert(self, prefix, next_hop):
-
-        last_next_hop = None
-        cur_node = self.root
-        for bit in prefix:
-
-            if cur_node.next_hop:
-                # store next-hop of the last node with next-hop found
-                last_next_hop = cur_node.next_hop
-                # clear node next-hop
-                cur_node.clear_next_hop()
-
-            if bit is 1:
-                # is to move to the right
-
-                # create node if necessary
-                if cur_node.right is None:
-                    cur_node.right = Node()
-
-                # check the other side of the node
-                # create node if necessary
-                if cur_node.left is None:
-                    # create node with the last next-hop of previous node
-                    cur_node.left = Node(last_next_hop)
-
-                # move the current node to the right node
-                cur_node = cur_node.right
-
-            else:
-                # is to move to the left
-
-                # create node if necessary
-                if cur_node.left is None:
-                    cur_node.left = Node()
-
-                # check the other side of the node
-                # create node if necessary
-                if cur_node.right is None:
-                    # create node with the last next-hop of previous node
-                    cur_node.right = Node(last_next_hop)
-
-                # move the current node to the left node
-                cur_node = cur_node.left
-
-        # set the next-hop of the final node
-        cur_node.next_hop = next_hop
-
-    def delete(self, prefix):
-
-        # look for the prefix in the tree
-        # start looking for the prefix at the root of the tree
-        cur_node = self.root
-
-        # list all the visited node in order (from the first to the last)
-        visited_nodes = []
-
-        for bit in prefix:
-
-            # add the node to the visited list
-            visited_nodes.insert(0, cur_node)
-
-            if cur_node is None:
-                # didn't find the prefix
-                break
-
-            if bit is 1:
-                # move to the right
-                cur_node = cur_node.right
-            else:
-                # move to the left
-                cur_node = cur_node.left
-
-        if cur_node is not None and cur_node.next_hop:
-            # the prefix was found
-            # remove node from the tree
-            parent_node = visited_nodes[0]
-            Binary2Tree.__delete_node(parent_node, cur_node, self.default_next_hop)
-
-            # remove all the unnecessary nodes
-            for node in visited_nodes:
-
-                if not node.left or not node.right:
-                    # reached root node -> can not remove root node
-                    break
-
-                # check if both children are equal
-                if node.left.next_hop == node.right.next_hop:
-                    # move the next-hop one node up
-                    node.next_hop = node.left.next_hop
-                    node.left = None
-                    node.right = None
-                else:
-                    # can't move up mode nodes
-                    break
-
     def lookup(self, ip_address, format=ip.Format.quad_doted):
         # convert ip address to binary format
         binary_address = to_binary(ip_address, format)
@@ -214,16 +119,6 @@ class Binary2Tree:
                 Binary2Tree.__from_binary_tree(binary_cur_node.left, new_node, next_hop, True)
                 # move to right node
                 Binary2Tree.__from_binary_tree(binary_cur_node.right, new_node, next_hop, False)
-
-    @staticmethod
-    def __delete_node(parent_node, node, default_next_hop):
-        if parent_node is not None:
-            if parent_node.left == node:
-                # node is the left node of the parent
-                parent_node.left.next_hop = default_next_hop
-            elif parent_node.right == node:
-                # node is the right node of the parent
-                parent_node.right.next_hop = default_next_hop
 
     @staticmethod
     def __print_table_node(node, bits):
