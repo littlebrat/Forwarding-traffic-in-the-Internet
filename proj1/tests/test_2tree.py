@@ -17,9 +17,13 @@ b2tree = Binary2Tree(btree)
 b2tree.print()
 print()
 
+btree.print_table()
+
 print("After delete 01/3")
 btree.delete(Prefix('01'))
 btree.print()
 b2tree = Binary2Tree(btree)
 b2tree.print()
 print()
+
+btree.print_table()
