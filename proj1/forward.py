@@ -24,58 +24,59 @@ def helpmsg():
     print('\n exit \t usage: quit the application.')
 
 
-def main(path = None):
+def main(path=None):
     print('Forwarding data-packets in a router, using binary trees and 2-trees for representing forwarding tables.')
     print('Type -h or help for instructions on program routines.')
 
-    file_name = path
-    bin_tree = BinaryTree()
-    bin_2tree = Binary2Tree(1)
+    bin_tree = None
 
-    if len(path) >= 2:
-        bin_tree.from_file(path[1])
+    if len(path) == 2:
+        try:
+            bin_tree = BinaryTree.from_file(path[1])
+        except FileNotFoundError:
+            print("the given file doesn't exist")
 
     while True:
+
         x = input()
         args = x.split(' ')
-        if args[0] == 'exit' and len(args) == 1:
+
+        if args[0] == 'exit':
             sys.exit()
-        elif args[0] == 'PrintTable' and len(args) == 2:
-            if args[1] == '1':
-                bin_tree.print_table()
-            elif args[1] == '2':
-                bin_2tree.print_table()
-            else:
-                print('wrong command format')
-                print('Type -h or help for instructions on program routines.')
-        elif args[0] == 'TwoTree' and len(args) == 1:
-            bin_2tree = Binary2Tree.from_binary_tree(bin_tree)
-        elif args[0] == 'AddPrefix' and len(args) == 3:
-            bin_tree.insert(Prefix(args[1]), args[2])
-        elif args[0] == 'AddressLookUp' and len(args) == 3:
-            if args[1] == '1':
-                print(bin_tree.lookup(args[2]))
-            elif args[1] == '2':
-                print(bin_2tree.lookup(args[2]))
-            else:
-                print('wrong command format')
-                print('Type -h or help for instructions on program routines.')
-        elif args[0] == 'DeletePrefix' and len(args) == 2:
-            bin_tree.delete(Prefix(args[1]))
-        elif args[0] == 'ReadTable' and len(args) == 2:
-            file_name = args[1]
-            bin_tree = BinaryTree()
-            bin_tree.from_file(file_name)
-        elif args[0] == 'Print' and len(args) == 2:
-            if args[1] == '1':
-                bin_tree.print()
-            elif args[1] == '2':
-                bin_2tree.print()
-        elif args[0] == 'help' or args[0] == '-h' and len(args) == 1:
-            helpmsg()
+            
+        elif args[0] == 'ReadTable':
+            try:
+                bin_tree = BinaryTree.from_file(args[1])
+            except FileNotFoundError:
+                print("the given file doesn't exist")
+
         else:
-            print('wrong command format')
-            print('Type -h or help for instructions on program routines.')
+            if not bin_tree:
+                print("Binary tree is not set yet")
+                print("Use the 'ReadTable' command to initialize the binary tree")
+                continue
+
+            if args[0] == 'PrintTable':
+                bin_tree.print_table()
+
+            elif args[0] == 'AddPrefix':
+                bin_tree.insert(Prefix(args[1]), args[2])
+
+            elif args[0] == 'AddressLookUp':
+                print(bin_tree.lookup(args[1]))
+
+            elif args[0] == 'DeletePrefix':
+                bin_tree.delete(Prefix(args[1]))
+
+            elif args[0] == 'Print':
+                bin_tree.print()
+
+            elif args[0] == 'help' or args[0] == '-h':
+                helpmsg()
+
+            else:
+                print("Wrong command please read the help instructions")
+                helpmsg()
 
 if __name__ == "__main__":
     main(sys.argv)

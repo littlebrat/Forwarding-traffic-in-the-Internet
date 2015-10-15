@@ -61,6 +61,7 @@ class Node:
             # return the destination node
             node = dest_node
 
+        Node._id_count -= 1
         node._id = self._id
             
         return node
