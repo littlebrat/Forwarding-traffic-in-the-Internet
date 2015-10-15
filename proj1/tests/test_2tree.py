@@ -1,4 +1,4 @@
-from proj1.binary_2tree.binary_2tree import Binary2Tree
+from proj1.binary_2tree import Binary2Tree
 from proj1.prefix import Prefix
 import proj1.tests.trees as trees
 
