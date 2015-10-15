@@ -1,8 +1,8 @@
 
 class Prefix:
 
-    def __init__(self, bits, format='str'):
-        if format is 'str':
+    def __init__(self, bits, format='-b'):
+        if format == '-b':
             # bits in string format
             if len(bits) > 32:
                 raise Exception("the string of bits is too long")
@@ -14,9 +14,24 @@ class Prefix:
             else:
                 self.length = len(bits)
                 self.bits = int(bits, base=2)
+
+        elif format == '-q':
+            ip, mask = bits.split('/')
+            bytes = ip.split('.')
+
+            # merge all bytes to make a 32 bit number
+            self.bits = 0
+            for byte in bytes:
+                self.bits = self.bits << 8 | int(byte)
+
+            print(self.bits)
+
+            self.length = int(mask)
+            self.bits >>= 32 - self.length
+
         else:
             # unsupported format
-            raise Exception("unsupported prefix input format")
+            raise Exception("unsupported bits input format")
 
     def get(self, bit_position):
         bit = self.bits & 2**(self.length - bit_position - 1)
