@@ -166,31 +166,42 @@ class BinaryTree:
                 cur_node = cur_node.left
 
     def delete(self, prefix):
+
+        # stack with all the visited nodes
+        visited_nodes = []
+
         cur_node = self.root
-        # reference to delete
-        parent, side = cur_node, ''
+
         for bit in prefix:
-            if bit is 1:
-                # find if the current node has 2 children
-                if cur_node.right is not None and cur_node.left is not None:
-                    parent, side = cur_node, 1
-                # move to the right
+
+            if cur_node is None:
+                # the prefix was not found
+                return
+
+            visited_nodes.append((cur_node, bit))
+
+            if bit:
+                # turn right
                 cur_node = cur_node.right
             else:
-                # find if the current node has 2 children
-                if cur_node.right is not None and cur_node.left is not None:
-                    parent, side = cur_node, 0
-                # move to the left
+                # turn left
                 cur_node = cur_node.left
-        if cur_node.right is not None or cur_node.left is not None:
+
+        if cur_node.next_hop:
+            # clear the node of the prefix
             cur_node.clear_next_hop()
-        else:
-            if side is 1:
-                # delete the right child of the tree
-                parent.clear_right()
-            elif side is 0:
-                # delete the left child of the tree
-                parent.clear_left()
+
+            for prev_node, bit in reversed(visited_nodes):
+                if not cur_node.next_hop and not cur_node.left and not cur_node.right:
+                    # this node is blank and has no children so it can be removed
+                    if bit:
+                        prev_node.clear_right()
+                    else:
+                        prev_node.clear_left()
+
+                    cur_node = prev_node
+                else:
+                    break
 
     def compress(self):
         # first step
