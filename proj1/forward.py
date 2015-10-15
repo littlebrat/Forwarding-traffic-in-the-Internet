@@ -41,42 +41,47 @@ def main(path=None):
         x = input()
         args = x.split(' ')
 
-        if args[0] == 'exit':
-            sys.exit()
-            
-        elif args[0] == 'ReadTable':
-            try:
-                bin_tree = BinaryTree.from_file(args[1])
-            except FileNotFoundError:
-                print("the given file doesn't exist")
+        try:
+            if args[0] == 'exit':
+                sys.exit()
 
-        else:
-            if not bin_tree:
-                print("Binary tree is not set yet")
-                print("Use the 'ReadTable' command to initialize the binary tree")
-                continue
-
-            if args[0] == 'PrintTable':
-                bin_tree.print_table()
-
-            elif args[0] == 'AddPrefix':
-                bin_tree.insert(Prefix(args[1]), args[2])
-
-            elif args[0] == 'AddressLookUp':
-                print(bin_tree.lookup(args[1]))
-
-            elif args[0] == 'DeletePrefix':
-                bin_tree.delete(Prefix(args[1]))
-
-            elif args[0] == 'Print':
-                bin_tree.print()
-
-            elif args[0] == 'help' or args[0] == '-h':
-                helpmsg()
+            elif args[0] == 'ReadTable':
+                try:
+                    bin_tree = BinaryTree.from_file(args[1])
+                except FileNotFoundError:
+                    print("the given file doesn't exist")
 
             else:
-                print("Wrong command please read the help instructions")
-                helpmsg()
+                if not bin_tree:
+                    print("Binary tree is not set yet")
+                    print("Use the 'ReadTable' command to initialize the binary tree")
+                    continue
+
+                if args[0] == 'PrintTable':
+                    bin_tree.print_table()
+
+                elif args[0] == 'AddPrefix':
+                    bin_tree.insert(Prefix(args[1]), args[2])
+
+                elif args[0] == 'AddressLookUp':
+                    print(bin_tree.lookup(args[1]))
+
+                elif args[0] == 'DeletePrefix':
+                    bin_tree.delete(Prefix(args[1]))
+
+                elif args[0] == 'Print':
+                    bin_tree.print()
+
+                elif args[0] == 'help' or args[0] == '-h':
+                    helpmsg()
+
+                else:
+                    print("Given command is not valid please read the help instructions")
+                    helpmsg()
+
+        except IndexError:
+            print("Given command is not valid please read the help instructions")
+            helpmsg()
 
 if __name__ == "__main__":
     main(sys.argv)
