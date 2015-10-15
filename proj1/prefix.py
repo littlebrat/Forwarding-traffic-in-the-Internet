@@ -7,8 +7,13 @@ class Prefix:
             if len(bits) > 32:
                 raise Exception("the string of bits is too long")
 
-            self.length = len(bits)
-            self.bits = int(bits, base=2)
+            if len(bits) == 0:
+                # empty prefix
+                self.length = 0
+                self.bits = 0
+            else:
+                self.length = len(bits)
+                self.bits = int(bits, base=2)
         else:
             # unsupported format
             raise Exception("unsupported prefix input format")
