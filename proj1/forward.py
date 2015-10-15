@@ -1,6 +1,7 @@
 import sys
-from proj1.binary_tree.binarytree import BinaryTree
-from proj1.binary_2tree.binary_2tree import Binary2Tree
+
+from proj1.binarytree import BinaryTree
+from proj1.binary_2tree import Binary2Tree
 from proj1.prefix import Prefix
 
 
