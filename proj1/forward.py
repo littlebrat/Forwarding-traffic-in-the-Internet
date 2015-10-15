@@ -77,4 +77,4 @@ def main(path=None):
                 helpmsg()
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv)
