@@ -10,7 +10,7 @@ def helpmsg():
     print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\t [p]: choose the binary prefix added to the tree [x].')
     print('\t [n]: choose the next hop value for this prefix [p]')
-    print('\n DeletePrefix [x] [p] \t usage: delete the prefix [p] from the tree [x]')
+    print('\n DeletePrefix (-b | -q) [x] [p] \t usage: delete the prefix [p] from the tree [x]')
     print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\t [p]: choose the binary prefix added to the tree [x].')
     print('\n PrintTable [x] \t usage: prints the table from the corresponding tree.')
@@ -75,6 +75,13 @@ def main(path=None):
                     print(bin_tree.lookup(args[1]))
 
                 elif args[0] == 'DeletePrefix':
+                    try:
+                        bin_tree.delete(Prefix(args[2], args[1]), args[3])
+                    except Exception:
+                        print("Prefix format is not correct. Two formats are supported:")
+                        print("\t-q Quad-doted, ex: 1.2.3.0/24")
+                        print("\t-b Binary, ex:101010101010")
+
                     bin_tree.delete(Prefix(args[1]))
 
                 elif args[0] == 'Print':
