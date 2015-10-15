@@ -11,14 +11,17 @@ class BinaryTree:
         # start with only one node with the default next-hop
         self.root = Node(default_next_hop)
 
-    def from_file(self, path):
+    @staticmethod
+    def from_file(path):
+        btree = BinaryTree()
+
         with open(path) as file:
             for line in file:
                 words = line.split()
                 if words[0] is '*':
-                    self.root.next_hop = words[1]
+                    btree.root.next_hop = words[1]
                 else:
-                    self.insert(Prefix(words[0]), words[1])
+                    btree.insert(Prefix(words[0]), words[1])
 
     def insert(self, prefix, next_hop):
         cur_node = self.root
