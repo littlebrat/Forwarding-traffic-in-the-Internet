@@ -6,11 +6,10 @@ from proj1.prefix import Prefix
 
 
 def helpmsg():
-    print('\n AddPrefix [p] [n] \t  usage: adds the prefix [p] to the binary tree with the chosen next hop value [n].')
+    print('\n AddPrefix (-b) [x] [p] [n] \t  usage: adds the prefix [p] to the corresponding tree [x] with the chosen next hop value [n].')
     print('\t [p]: choose the binary prefix added to the tree [x].')
     print('\t [n]: choose the next hop value for this prefix [p].')
-    print('\n DeletePrefix [p] \t usage: delete the prefix [p] from the binary tree.')
-    print('\t [p]: choose the binary prefix deleted from the tree.')
+    print('\n DeletePrefix (-b) [x] [p] \t usage: delete the prefix [p] from the tree [x]')
     print('\n PrintTable [x] \t usage: prints the table from the corresponding tree.')
     print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\n AddressLookUp [x] [ip] \t usage: look up the corresponding next hop value on the tree [x] assigned to the address [ip].')
@@ -61,12 +60,36 @@ def main(path=None):
                     bin_tree.print_table()
 
                 elif args[0] == 'AddPrefix':
-                    bin_tree.insert(Prefix(args[1]), args[2])
+                    try:
+                        if args[1] == '*':
+                            bin_tree.insert(Prefix('', '-b'), args[2])
+                        elif args[1] == '-b':
+                            bin_tree.insert(Prefix(args[2], '-b'), args[3])
+                        else:
+                            bin_tree.insert(Prefix(args[1], '-q'), args[2])
+
+                    except Exception:
+                        print("Prefix format is not correct. Two formats are supported:")
+                        print("\t-q Quad-doted, ex: 1.2.3.0/24")
+                        print("\t-b Binary, ex:101010101010")
 
                 elif args[0] == 'AddressLookUp':
                     print(bin_tree.lookup(args[1]))
 
                 elif args[0] == 'DeletePrefix':
+                    try:
+                        if args[1] == '*':
+                            bin_tree.delete(Prefix('', '-b'))
+                        elif args[1] == '-b':
+                            bin_tree.delete(Prefix(args[2], '-b'))
+                        else:
+                            bin_tree.delete(Prefix(args[1], '-q'))
+
+                    except Exception:
+                        print("Prefix format is not correct. Two formats are supported:")
+                        print("\t-q Quad-doted, ex: 1.2.3.0/24")
+                        print("\t-b Binary, ex:101010101010")
+
                     bin_tree.delete(Prefix(args[1]))
 
                 elif args[0] == 'Print':
