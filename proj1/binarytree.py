@@ -23,6 +23,8 @@ class BinaryTree:
                 else:
                     btree.insert(Prefix(words[0]), words[1])
 
+        return btree
+
     def insert(self, prefix, next_hop):
         cur_node = self.root
         for bit in prefix:
