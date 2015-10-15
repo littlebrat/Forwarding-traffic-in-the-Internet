@@ -43,6 +43,9 @@ def main(path=None):
                 except FileNotFoundError:
                     print("the given file doesn't exist")
 
+            elif args[0] == 'help' or args[0] == '-h':
+                    helpmsg()
+
             else:
                 if not bin_tree:
                     print("Binary tree is not set yet")
@@ -87,9 +90,6 @@ def main(path=None):
 
                 elif args[0] == 'PrintTree':
                     bin_tree.print()
-
-                elif args[0] == 'help' or args[0] == '-h':
-                    helpmsg()
 
                 else:
                     print("Given command is not valid please read the help instructions")
