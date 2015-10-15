@@ -1,4 +1,4 @@
-from proj1.binary_tree.binarytree import BinaryTree
+from proj1.binarytree import BinaryTree
 from proj1.ip_address import to_binary
 from proj1.node import Node
 import proj1.ip_address as ip
