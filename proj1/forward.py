@@ -6,7 +6,7 @@ from proj1.prefix import Prefix
 
 
 def helpmsg():
-    print('\n AddPrefix [x] [p] [n] \t  usage: adds the prefix [p] to the corresponding tree [x] with the chosen next hop value [n].')
+    print('\n AddPrefix (-b | -q) [x] [p] [n] \t  usage: adds the prefix [p] to the corresponding tree [x] with the chosen next hop value [n].')
     print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\t [p]: choose the binary prefix added to the tree [x].')
     print('\t [n]: choose the next hop value for this prefix [p]')
@@ -64,7 +64,12 @@ def main(path=None):
                     bin_tree.print_table()
 
                 elif args[0] == 'AddPrefix':
-                    bin_tree.insert(Prefix(args[1]), args[2])
+                    try:
+                        bin_tree.insert(Prefix(args[2], args[1]), args[3])
+                    except Exception:
+                        print("Prefix format is not correct. Two formats are supported:")
+                        print("\t-q Quad-doted, ex: 1.2.3.0/24")
+                        print("\t-b Binary, ex:101010101010")
 
                 elif args[0] == 'AddressLookUp':
                     print(bin_tree.lookup(args[1]))
