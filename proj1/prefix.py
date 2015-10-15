@@ -1,8 +1,8 @@
 
 class Prefix:
 
-    def __init__(self, bits, format='bin'):
-        if format == 'bin':
+    def __init__(self, bits, format='-b'):
+        if format == '-b':
             # bits in string format
             if len(bits) > 32:
                 raise Exception("the string of bits is too long")
@@ -10,7 +10,7 @@ class Prefix:
             self.length = len(bits)
             self.bits = int(bits, base=2)
 
-        elif format == 'quad_doted':
+        elif format == '-q':
             ip, mask = bits.split('/')
             bytes = ip.split('.')
 
