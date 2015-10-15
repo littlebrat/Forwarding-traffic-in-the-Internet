@@ -5,7 +5,6 @@ from proj1.prefix import Prefix
 
 
 def helpmsg():
-
     print('\n AddPrefix [x] [p] [n] \t  usage: adds the prefix [p] to the corresponding tree [x] with the chosen next hop value [n].')
     print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\t [p]: choose the binary prefix added to the tree [x].')
@@ -21,6 +20,8 @@ def helpmsg():
     print('\n ReadTable [x] [path] \t usage: read the the table file [path] and build the corresponding tree [x]')
     print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\t [path]: the relative path to this file execution.')
+    print('\n Print [x] \t usage: prints graphically the tree [x] to the terminal output.')
+    print('\t [x]: choose 1 if relative to binary tree and 2 if relative to the 2-tree.')
     print('\n TwoTree \t usage: convert the binary tree to a 2-tree.')
     print('\n exit \t usage: quit the application.')
 
@@ -32,6 +33,7 @@ def main(path = None):
     file_name = path
     bin_tree = BinaryTree()
     bin_2tree = Binary2Tree(1)
+
     if path != None:
         bin_tree.from_file(path)
 
@@ -49,7 +51,7 @@ def main(path = None):
                 print('wrong command format')
                 print('Type -h or help for instructions on program routines.')
         elif args[0] == 'TwoTree' and len(args) == 1:
-            bin_2tree.from_binary_tree(bin_tree)
+            bin_2tree = Binary2Tree.from_binary_tree(bin_tree)
         elif args[0] == 'AddPrefix' and len(args) == 4:
             if args[1] == '1':
                 bin_tree.insert(Prefix(args[2]), args[3])
@@ -85,6 +87,11 @@ def main(path = None):
             else:
                 print('wrong command format')
                 print('Type -h or help for instructions on program routines.')
+        elif args[0] == 'Print' and len(args) == 2:
+            if args[1] == '1':
+                bin_tree.print()
+            elif args[1] == '2':
+                bin_2tree.print()
         elif args[0] == 'help' or args[0] == '-h' and len(args) == 1:
             helpmsg()
         else:
