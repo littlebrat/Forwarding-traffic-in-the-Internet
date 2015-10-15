@@ -34,7 +34,10 @@ def main(path=None):
     bin_tree = None
 
     if len(path) == 2:
-        bin_tree = BinaryTree.from_file(path[1])
+        try:
+            bin_tree = BinaryTree.from_file(path[1])
+        except FileNotFoundError:
+            print("the given file doesn't exist")
 
     while True:
 
@@ -45,8 +48,10 @@ def main(path=None):
             sys.exit()
             
         elif args[0] == 'ReadTable':
-            file_name = args[1]
-            bin_tree = BinaryTree.from_file(file_name)
+            try:
+                bin_tree = BinaryTree.from_file(args[1])
+            except FileNotFoundError:
+                print("the given file doesn't exist")
 
         else:
             if not bin_tree:
