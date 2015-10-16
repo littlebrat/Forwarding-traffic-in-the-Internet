@@ -3,6 +3,7 @@ from proj1.node import Node
 from proj1.prefix import Prefix
 from proj1.ip_address import to_binary
 import proj1.ip_address as ip
+from prettytable import PrettyTable
 
 
 class BinaryTree:
@@ -225,19 +226,22 @@ class BinaryTree:
         BinaryTree.__print_node(self.root, 0)
 
     def print_table(self):
-        BinaryTree.__print_table_node(self.root, '')
+        table = PrettyTable(["Prefixes", "Next-Hops"])
+        table.align["Prefixes"] = "l"
+        BinaryTree.__print_table_node(self.root, '', table)
+        print(table)
 
     @staticmethod
-    def __print_table_node(node, bits):
+    def __print_table_node(node, bits, table):
         if node is not None:
             if node.next_hop:
-                print(bits, node.next_hop)
+                table.add_row([bits, node.next_hop])
 
             # print left node
-            BinaryTree.__print_table_node(node.left, bits + '0')
+            BinaryTree.__print_table_node(node.left, bits + '0', table)
 
             # print right node
-            BinaryTree.__print_table_node(node.right, bits + '1')
+            BinaryTree.__print_table_node(node.right, bits + '1', table)
 
     @staticmethod
     def __print_node(node, level):
