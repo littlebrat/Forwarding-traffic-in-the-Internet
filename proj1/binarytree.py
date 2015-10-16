@@ -228,7 +228,13 @@ class BinaryTree:
     def print_table(self):
         table = PrettyTable(["Prefixes", "Next-Hops"])
         table.align["Prefixes"] = "l"
-        BinaryTree.__print_table_node(self.root, '', table)
+
+        if self.root.next_hop:
+                table.add_row(['*', self.root.next_hop])
+
+        BinaryTree.__print_table_node(self.root.left, '0', table)
+        BinaryTree.__print_table_node(self.root.right, '1', table)
+
         print(table)
 
     @staticmethod
