@@ -1,16 +1,18 @@
-from proj1.binary_tree.binarytree import BinaryTree
+from proj1.binarytree import BinaryTree
 from proj1.ip_address import quad_doted_to_binary
+from proj1.prefix import Prefix
 
 
-def files_test():
+def files_test(debug=False):
     tree_array = []
     for i in range(10):
-        print('>>> test: ' + str(i)+'\n')
-        tree = BinaryTree()
-        tree.from_file('../test_files/test_'+str(i)+'.txt')
+        if debug is True:
+            print('>>> test: ' + str(i)+'\n')
+        tree = BinaryTree.from_file('../test_files/test_'+str(i)+'.txt')
         tree_array.append(tree)
-        tree.print()
-        print()
+        if debug is True:
+            tree.print()
+            print()
     return tree_array
 
 
@@ -27,5 +29,178 @@ def files_lookup(trees):
         print(t.lookup("160.70.34.56"), quad_doted_to_binary("160.70.34.56"))
         print()
 
+def files_delete_0(trees):
+    tree = trees[0]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('00'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('110'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('010'))
+    tree.print()
+    print('>>> test: 4\n')
+    tree.delete(Prefix('10'))
+    tree.print()
+    print('>>> test: 5\n')
+    tree.delete(Prefix('11'))
+    tree.print()
+
+def files_delete_1(trees):
+    tree = trees[1]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('01'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('10'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('000'))
+    tree.print()
+    print('>>> test: 4\n')
+    tree.delete(Prefix('001'))
+    tree.print()
+    print('>>> test: 5\n')
+    tree.delete(Prefix('11'))
+    tree.print()
+
+def files_delete_2(trees):
+    tree = trees[2]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('0'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('00'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('000'))
+    tree.print()
+    print('>>> test: 4\n')
+    tree.delete(Prefix('0011'))
+    tree.print()
+    print('>>> test: 5\n')
+    tree.delete(Prefix('00000'))
+    tree.print()
+
+def files_delete_3(trees):
+    tree = trees[3]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('0'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('00'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('000'))
+    tree.print()
+    print('>>> test: 4\n')
+    tree.delete(Prefix('0011'))
+    tree.print()
+    print('>>> test: 5\n')
+    tree.delete(Prefix('00000'))
+    tree.print()
+
+def files_delete_5(trees):
+    tree = trees[5]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('00'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('10'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('11'))
+    tree.print()
+
+def files_delete_6(trees):
+    tree = trees[6]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('000'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('001'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('11'))
+    tree.print()
+    print('>>> test: 4\n')
+    tree.delete(Prefix('10'))
+    tree.print()
+    print('>>> test: 5\n')
+    tree.delete(Prefix('01'))
+    tree.print()
+
+def files_delete_7(trees):
+    tree = trees[7]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('10101011'))
+    tree.print()
+
+def files_delete_8(trees):
+    tree = trees[8]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('000'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('100'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('001'))
+    tree.print()
+    print('>>> test: 4\n')
+    tree.delete(Prefix('010'))
+    tree.print()
+    print('>>> test: 5\n')
+    tree.delete(Prefix('111'))
+    tree.print()
+    print('>>> test: 6\n')
+    tree.delete(Prefix('110'))
+    tree.print()
+    print('>>> test: 7\n')
+    tree.delete(Prefix('101'))
+    tree.print()
+    print('>>> test: 8\n')
+    tree.delete(Prefix('011'))
+    tree.print()
+
+def files_delete_9(trees):
+    tree = trees[9]
+    tree.print()
+    print('>>> test: 1\n')
+    tree.delete(Prefix('0'))
+    tree.print()
+    print('>>> test: 2\n')
+    tree.delete(Prefix('00'))
+    tree.print()
+    print('>>> test: 3\n')
+    tree.delete(Prefix('0000'))
+    tree.print()
+    print('>>> test: 4\n')
+    tree.delete(Prefix('01'))
+    tree.print()
+    print('>>> test: 5\n')
+    tree.delete(Prefix('000'))
+    tree.print()
+
+
 trees = files_test()
-files_lookup(trees)
+#files_lookup(trees)
+#files_delete_0(trees)
+#files_delete_1(trees)
+#files_delete_2(trees)
+#files_delete_3(trees)
+#files_delete_4(trees)
+#files_delete_5(trees)
+#files_delete_6(trees)
+#files_delete_7(trees)
+#files_delete_8(trees)
+#files_delete_9(trees)
