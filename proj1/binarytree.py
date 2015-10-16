@@ -1,8 +1,8 @@
 from collections import deque
-from proj1.node import Node
-from proj1.prefix import Prefix
-from proj1.ip_address import to_binary
-import proj1.ip_address as ip
+from node import Node
+from prefix import Prefix
+from ip_address import to_binary
+import ip_address as ip
 
 
 class BinaryTree:
