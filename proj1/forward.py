@@ -12,7 +12,6 @@ def helpmsg():
     print('AddressLookUp [ip]       looks up the next-hop for the given ip address [ip]')
     print('ReadTable [path]         builds the binary tree from the given file')
     print('PrintTree                prints the table in a tree format')
-    print('TwoTree                  converts the binary tree to a binary 2-tree')
     print('exit                     quits the application')
 
 
@@ -21,10 +20,12 @@ def main(path=None):
     print('Type -h or help for instructions on program routines.')
 
     bin_tree = None
+    bin2_tree = None
 
     if len(path) == 2:
         try:
             bin_tree = BinaryTree.from_file(path[1])
+            bin2_tree = Binary2Tree(bin_tree)
         except FileNotFoundError:
             print("the given file doesn't exist")
 
@@ -40,6 +41,7 @@ def main(path=None):
             elif args[0] == 'ReadTable':
                 try:
                     bin_tree = BinaryTree.from_file(args[1])
+                    bin2_tree = Binary2Tree(bin_tree)
                 except FileNotFoundError:
                     print("the given file doesn't exist")
 
@@ -53,7 +55,12 @@ def main(path=None):
                     continue
 
                 if args[0] == 'PrintTable':
+                    print("Binary Tree")
                     bin_tree.print_table()
+                    print()
+                    print("Binary 2-tree")
+                    bin2_tree.print_table()
+                    print()
 
                 elif args[0] == 'AddPrefix':
                     try:
@@ -64,13 +71,15 @@ def main(path=None):
                         else:
                             bin_tree.insert(Prefix(args[1], '-q'), args[2])
 
+                        bin2_tree = Binary2Tree(bin_tree)
+
                     except Exception:
                         print("Prefix format is not correct. Two formats are supported:")
                         print("\tQuad-doted, ex: 1.2.3.0/24")
                         print("\tBinary, ex:101010101010")
 
                 elif args[0] == 'AddressLookUp':
-                    print(bin_tree.lookup(args[1]))
+                    print(bin2_tree.lookup(args[1]))
 
                 elif args[0] == 'DeletePrefix':
                     try:
@@ -80,6 +89,8 @@ def main(path=None):
                             bin_tree.delete(Prefix(args[2], '-b'))
                         else:
                             bin_tree.delete(Prefix(args[1], '-q'))
+
+                        bin2_tree = Binary2Tree(bin_tree)
 
                     except Exception:
                         print("Prefix format is not correct. Two formats are supported:")
