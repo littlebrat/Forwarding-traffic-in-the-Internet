@@ -21,6 +21,7 @@ def files_lookup(trees):
     for t in trees:
         print('>>> test: ' + str(i)+'\n')
         i += 1
+        t.print()
         print(t.lookup("255.22.0.69"), quad_doted_to_binary("255.22.0.69"))
         print(t.lookup("0.42.1.1"), quad_doted_to_binary("0.42.1.1"))
         print(t.lookup("127.10.100.0"), quad_doted_to_binary("127.10.100.0"))
@@ -194,7 +195,7 @@ def files_delete_9(trees):
 
 trees = files_test()
 #files_lookup(trees)
-#files_delete_0(trees)
+files_delete_0(trees)
 #files_delete_1(trees)
 #files_delete_2(trees)
 #files_delete_3(trees)
