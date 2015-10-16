@@ -87,8 +87,6 @@ def main(path=None):
                         print("\tQuad-doted, ex: 1.2.3.0/24")
                         print("\tBinary, ex:101010101010")
 
-                    bin_tree.delete(Prefix(args[1]))
-
                 elif args[0] == 'PrintTree':
                     bin_tree.print()
 
