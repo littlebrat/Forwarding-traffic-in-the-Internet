@@ -263,7 +263,8 @@ class BinaryTree:
 
             if node.next_hop and not node.left and not node.right:
                 # this node is a leaf
-                node.next_hop = {node.next_hop}
+                if ortc:
+                    node.next_hop = {node.next_hop}
                 return
 
             if node.left and not node.right:
