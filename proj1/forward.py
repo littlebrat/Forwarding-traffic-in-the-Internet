@@ -99,7 +99,12 @@ def main(path=None):
                         print("\tBinary, ex:101010101010")
 
                 elif args[0] == 'PrintTree':
+                    print("Binary Tree")
                     bin_tree.print()
+                    print()
+                    print("Binary 2-Tree")
+                    bin2_tree.print()
+                    print()
 
                 else:
                     print("Given command is not valid please read the help instructions")
