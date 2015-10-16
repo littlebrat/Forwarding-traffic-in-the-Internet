@@ -8,6 +8,7 @@ from prefix import Prefix
 def helpmsg():
     print()
     print('AddPrefix (-b) [p] [n]   adds the prefix [p] to the current table with the next-hop value [n]')
+    print('DeletePrefix (-b) [p]    deletes the prefix [p] from the binary tree.')
     print('PrintTable               prints current table')
     print('AddressLookUp [ip]       looks up the next-hop for the given ip address [ip]')
     print('ReadTable [path]         builds the binary tree from the given file')
