@@ -193,9 +193,9 @@ def files_delete_9(trees):
     tree.print()
 
 
-trees = files_test()
+#trees = files_test()
 #files_lookup(trees)
-files_delete_0(trees)
+#files_delete_0(trees)
 #files_delete_1(trees)
 #files_delete_2(trees)
 #files_delete_3(trees)
