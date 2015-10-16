@@ -1,4 +1,4 @@
-from proj1.prefix import Prefix
+from prefix import Prefix
 
 prefix = Prefix("000110101")
 print(prefix)

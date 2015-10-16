@@ -1,4 +1,4 @@
-from proj1.tests.test_read_files import files_test
+from tests.test_read_files import files_test
 
 trees = files_test()
 

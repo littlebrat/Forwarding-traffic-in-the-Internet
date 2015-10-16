@@ -1,6 +1,6 @@
-from proj1.binarytree import BinaryTree
-from proj1.ip_address import quad_doted_to_binary
-from proj1.prefix import Prefix
+from binarytree import BinaryTree
+from ip_address import quad_doted_to_binary
+from prefix import Prefix
 
 
 def files_test(debug=False):

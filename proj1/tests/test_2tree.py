@@ -1,6 +1,6 @@
-from proj1.binary_2tree import Binary2Tree
-from proj1.prefix import Prefix
-import proj1.tests.trees as trees
+from binary_2tree import Binary2Tree
+from prefix import Prefix
+import tests.trees as trees
 
 btree = trees.build_tree1()
 

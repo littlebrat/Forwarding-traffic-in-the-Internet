@@ -1,5 +1,5 @@
-from proj1.binary_tree.binarytree import BinaryTree
-from proj1.prefix import Prefix
+from binarytree import BinaryTree
+from prefix import Prefix
 
 btree = BinaryTree(1)
 btree.insert(Prefix('111'), 3)

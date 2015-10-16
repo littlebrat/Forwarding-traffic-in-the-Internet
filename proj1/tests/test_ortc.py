@@ -1,6 +1,6 @@
-import proj1.tests.test_utils as utils
-from proj1.binary_tree.binarytree import BinaryTree
-from proj1.prefix import Prefix
+import tests.test_utils as utils
+from binarytree import BinaryTree
+from prefix import Prefix
 
 
 tree = utils.build_prof_tree()

@@ -1,4 +1,4 @@
-import proj1.ip_address as ip
+import ip_address as ip
 
 quad_doted_address = "16.8.4.1"
 decimal_address = 268960769

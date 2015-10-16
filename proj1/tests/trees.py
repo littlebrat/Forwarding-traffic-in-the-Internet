@@ -1,5 +1,5 @@
-from proj1.binarytree import BinaryTree
-from proj1.prefix import Prefix
+from binarytree import BinaryTree
+from prefix import Prefix
 
 
 def build_tree1() -> BinaryTree:
