@@ -79,7 +79,8 @@ def main(path=None):
                         print("\tBinary, ex:101010101010")
 
                 elif args[0] == 'AddressLookUp':
-                    print(bin2_tree.lookup(args[1]))
+                    print("Lookup on the binary tree: ", bin_tree.lookup(args[1]))
+                    print("Lookup on the binary 2-tree: ", bin2_tree.lookup(args[1]))
 
                 elif args[0] == 'DeletePrefix':
                     try:
