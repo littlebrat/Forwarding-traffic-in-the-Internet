@@ -28,7 +28,7 @@ class BinaryTree:
     def insert(self, prefix, next_hop):
         cur_node = self.root
         for bit in prefix:
-            if bit is 1:
+            if bit:
                 # move to the right
                 if cur_node.right is None:
                     # create node if necessary
