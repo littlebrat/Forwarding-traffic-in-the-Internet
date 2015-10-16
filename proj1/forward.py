@@ -12,6 +12,7 @@ def helpmsg():
     print('AddressLookUp [ip]       looks up the next-hop for the given ip address [ip]')
     print('ReadTable [path]         builds the binary tree from the given file')
     print('PrintTree                prints the table in a tree format')
+    print('Compress                 compresses the binary tree creating an equivalent table that uses less memory')
     print('exit                     quits the application')
 
 
@@ -105,6 +106,10 @@ def main(path=None):
                     print("Binary 2-Tree")
                     bin2_tree.print()
                     print()
+
+                elif args[0] == "Compress":
+                    bin_tree.compress()
+                    bin2_tree = Binary2Tree(bin_tree)
 
                 else:
                     print("Given command is not valid please read the help instructions")
